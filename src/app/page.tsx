@@ -1,6 +1,6 @@
 import React from 'react';
 import { ResizerTool } from '@/components/ImageResizer/ResizerTool';
-import { Layers, Zap, ShieldCheck, Github } from 'lucide-react';
+import { Layers, Zap, ShieldCheck, FileEdit } from 'lucide-react';
 
 export default function Home() {
   const jsonLd = {
@@ -50,8 +50,14 @@ export default function Home() {
             <a href="#" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Privacy</a>
           </nav>
           <div className="flex items-center gap-4">
-            <a href="https://github.com" target="_blank" rel="noreferrer" className="text-primary hover:text-accent transition-colors">
-              <Github className="w-5 h-5" />
+            <a 
+              href="https://camly.org" 
+              target="_blank" 
+              rel="noreferrer" 
+              className="text-primary hover:text-accent transition-colors"
+              title="Advanced PDF & Image Editor"
+            >
+              <FileEdit className="w-5 h-5" />
             </a>
           </div>
         </div>
