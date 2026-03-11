@@ -145,64 +145,65 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="border-t bg-white mt-20">
-        <div className="max-w-7xl mx-auto px-4 py-12 md:py-16">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-start text-center md:text-left">
+        <div className="max-w-7xl mx-auto px-4 py-8 md:py-16">
+          <div className="grid grid-cols-3 gap-4 md:gap-12 items-start text-left">
             {/* Branding */}
-            <div className="flex flex-col items-center md:items-start gap-4">
-              <div className="flex items-center gap-2.5">
-                <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg">
-                  <Layers className="w-5 h-5" />
+            <div className="flex flex-col items-start gap-2 md:gap-4">
+              <div className="flex items-center gap-1.5 md:gap-2.5">
+                <div className="w-6 h-6 md:w-10 md:h-10 bg-primary rounded-lg md:rounded-xl flex items-center justify-center text-white shadow-md md:shadow-lg">
+                  <Layers className="w-3.5 h-3.5 md:w-5 md:h-5" />
                 </div>
-                <span className="text-xl font-black tracking-tighter text-primary">
-                  Img<span className="text-accent">Resizer</span>
+                <span className="text-xs md:text-xl font-black tracking-tighter text-primary">
+                  Img<span className="text-accent">Res</span>
                 </span>
               </div>
-              <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
-                The professional browser-based tool for resizing images without losing quality. Fast, secure, and 100% private.
+              <p className="text-[10px] md:text-sm text-muted-foreground max-w-xs leading-tight md:leading-relaxed">
+                Professional browser-based image resizing. Private and secure.
               </p>
             </div>
 
             {/* Links */}
-            <div className="flex flex-col items-center md:items-start gap-4">
-              <h4 className="font-bold text-primary">Product</h4>
-              <nav className="flex flex-col gap-2">
-                <a href="#features" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Features</a>
-                <a href="#why-us" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">About Us</a>
-                <a href="#" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Sitemap</a>
+            <div className="flex flex-col items-start gap-2 md:gap-4">
+              <h4 className="font-bold text-primary text-[10px] md:text-base">Product</h4>
+              <nav className="flex flex-col gap-1 md:gap-2">
+                <a href="#features" className="text-[9px] md:text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Features</a>
+                <a href="#why-us" className="text-[9px] md:text-sm font-medium text-muted-foreground hover:text-accent transition-colors">About</a>
+                <a href="#" className="text-[9px] md:text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Sitemap</a>
               </nav>
             </div>
 
             {/* Legal & CTA */}
-            <div className="flex flex-col items-center md:items-start gap-6">
-              <div className="space-y-4">
-                <h4 className="font-bold text-primary">Legal</h4>
-                <nav className="flex flex-col gap-2">
-                  <a href="#" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Privacy Policy</a>
-                  <a href="#" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Terms of Service</a>
+            <div className="flex flex-col items-start gap-3 md:gap-6">
+              <div className="space-y-1 md:space-y-4">
+                <h4 className="font-bold text-primary text-[10px] md:text-base">Legal</h4>
+                <nav className="flex flex-col gap-1 md:gap-2">
+                  <a href="#" className="text-[9px] md:text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Privacy</a>
+                  <a href="#" className="text-[9px] md:text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Terms</a>
                 </nav>
               </div>
               <a 
                 href="https://camly.org" 
                 target="_blank" 
                 rel="noreferrer" 
-                className="inline-flex items-center gap-2.5 text-xs font-bold text-primary bg-primary/5 hover:bg-primary/10 px-6 py-3 rounded-full border border-primary/10 transition-all group"
+                className="inline-flex items-center gap-1 md:gap-2.5 text-[8px] md:text-xs font-bold text-primary bg-primary/5 hover:bg-primary/10 px-2 md:px-6 py-1.5 md:py-3 rounded-full border border-primary/10 transition-all group"
               >
-                <PencilRuler className="w-4 h-4 text-accent transition-transform group-hover:rotate-12" />
-                Advanced PDF Editor
+                <PencilRuler className="w-3 h-3 md:w-4 md:h-4 text-accent transition-transform group-hover:rotate-12" />
+                <span className="hidden sm:inline">Advanced Editor</span>
+                <span className="sm:hidden">Camly</span>
               </a>
             </div>
           </div>
 
-          <div className="mt-16 pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-6">
-            <p className="text-xs font-medium text-muted-foreground">
-              © {new Date().getFullYear()} ImgResizer.xyz. All rights reserved.
+          <div className="mt-8 md:mt-16 pt-4 md:pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
+            <p className="text-[9px] md:text-xs font-medium text-muted-foreground">
+              © {new Date().getFullYear()} ImgResizer.xyz
             </p>
-            <div className="flex items-center gap-4 text-[10px] uppercase tracking-widest font-bold text-muted-foreground/40">
-              <span>Privacy First</span>
-              <span className="w-1 h-1 rounded-full bg-border" />
-              <span>Browser Based</span>
-              <span className="w-1 h-1 rounded-full bg-border" />
-              <span>AI Powered</span>
+            <div className="flex items-center gap-2 md:gap-4 text-[8px] md:text-[10px] uppercase tracking-tighter md:tracking-widest font-bold text-muted-foreground/40">
+              <span>Private</span>
+              <span className="w-0.5 h-0.5 rounded-full bg-border" />
+              <span>Browser</span>
+              <span className="w-0.5 h-0.5 rounded-full bg-border" />
+              <span>AI</span>
             </div>
           </div>
         </div>
