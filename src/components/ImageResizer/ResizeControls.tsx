@@ -31,6 +31,12 @@ interface ResizeControlsProps {
 
 const PRESET_GROUPS = [
   {
+    label: "Reset",
+    items: [
+      { label: 'Original Size', w: 0, h: 0 },
+    ]
+  },
+  {
     label: "Social Media",
     items: [
       { label: 'Instagram Square (1080x1080)', w: 1080, h: 1080 },
@@ -95,6 +101,17 @@ export const ResizeControls: React.FC<ResizeControlsProps> = ({
   };
 
   const handlePresetChange = (presetLabel: string) => {
+    if (presetLabel === 'Original Size') {
+      onChange({ 
+        ...params, 
+        width: originalWidth, 
+        height: originalHeight, 
+        percentage: 100,
+        lockAspectRatio: true 
+      });
+      return;
+    }
+
     const allPresets = PRESET_GROUPS.flatMap(g => g.items);
     const preset = allPresets.find(p => p.label === presetLabel);
     if (preset) {
