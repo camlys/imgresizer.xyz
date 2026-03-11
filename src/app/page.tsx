@@ -159,7 +159,7 @@ export default function Home() {
                   <Layers className="w-3.5 h-3.5 md:w-5 md:h-5" />
                 </div>
                 <span className="text-xs md:text-xl font-black tracking-tighter text-primary">
-                  Img<span className="text-accent">Res</span>
+                  Img<span className="text-accent">Resizer</span>
                 </span>
               </div>
               <p className="text-[10px] md:text-sm text-muted-foreground max-w-xs leading-tight md:leading-relaxed">
@@ -178,7 +178,7 @@ export default function Home() {
             </div>
 
             {/* Legal & CTA */}
-            <div className="flex flex-col items-start gap-3 md:gap-6">
+            <div className="flex flex-row items-start gap-3 md:gap-8">
               <div className="space-y-1 md:space-y-4">
                 <h4 className="font-bold text-primary text-[10px] md:text-base">Legal</h4>
                 <nav className="flex flex-col gap-1 md:gap-2">
@@ -186,16 +186,18 @@ export default function Home() {
                   <a href="#" className="text-[9px] md:text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Terms</a>
                 </nav>
               </div>
-              <a 
-                href="https://camly.org" 
-                target="_blank" 
-                rel="noreferrer" 
-                className="group inline-flex items-center gap-1 md:gap-2.5 px-2 md:px-5 py-1.5 md:py-2.5 text-[8px] md:text-xs font-bold transition-all duration-300 bg-white border border-primary/10 rounded-full hover:border-accent/50 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] hover:shadow-accent/10 active:scale-95"
-              >
-                <PencilRuler className="w-3 h-3 md:w-4 md:h-4 text-accent transition-transform group-hover:rotate-12" />
-                <span className="text-primary group-hover:text-accent transition-colors hidden sm:inline">Advanced Editor</span>
-                <span className="sm:hidden text-primary group-hover:text-accent transition-colors">Camly</span>
-              </a>
+              <div className="pt-3 md:pt-6">
+                <a 
+                  href="https://camly.org" 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="group inline-flex items-center gap-1 md:gap-2.5 px-2 md:px-5 py-1.5 md:py-2.5 text-[8px] md:text-xs font-bold transition-all duration-300 bg-white border border-primary/10 rounded-full hover:border-accent/50 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] hover:shadow-accent/10 active:scale-95"
+                >
+                  <PencilRuler className="w-3 h-3 md:w-4 md:h-4 text-accent transition-transform group-hover:rotate-12" />
+                  <span className="text-primary group-hover:text-accent transition-colors hidden sm:inline">Advanced Editor</span>
+                  <span className="sm:hidden text-primary group-hover:text-accent transition-colors">Camly</span>
+                </a>
+              </div>
             </div>
           </div>
 
