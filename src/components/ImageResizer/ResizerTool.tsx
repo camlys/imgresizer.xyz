@@ -112,7 +112,7 @@ export const ResizerTool = () => {
 
   return (
     <div className="max-w-7xl mx-auto">
-      {/* Forced two-column grid even on mobile */}
+      {/* Forced two-column grid layout for both mobile and desktop as requested (5/12 split) */}
       <div className="grid grid-cols-12 gap-3 md:gap-8">
         
         {/* Left Column: Upload & Controls (5 columns) */}
@@ -136,21 +136,18 @@ export const ResizerTool = () => {
                 <h3 className="font-semibold text-primary flex items-center gap-1.5 md:gap-2 text-xs md:text-base">
                   <Settings2 className="w-3.5 h-3.5 md:w-4 h-4" /> Format
                 </h3>
-                <div className="flex flex-col md:flex-row gap-1.5 p-1 bg-muted rounded-lg">
-                  {(['image/jpeg', 'image/png', 'image/webp'] as const).map((fmt) => (
-                    <button
-                      key={fmt}
-                      onClick={() => setOutputSettings(prev => ({ ...prev, format: fmt }))}
-                      className={`flex-1 py-1.5 md:py-2 text-[10px] md:text-xs font-semibold rounded-md transition-all ${
-                        outputSettings.format === fmt 
-                        ? "bg-white text-primary shadow-sm" 
-                        : "text-muted-foreground hover:text-primary"
-                      }`}
-                    >
-                      {fmt.split('/')[1].toUpperCase()}
-                    </button>
-                  ))}
-                </div>
+                {/* Output format implemented as a tab function as requested */}
+                <Tabs 
+                  value={outputSettings.format} 
+                  onValueChange={(val) => setOutputSettings(prev => ({ ...prev, format: val as any }))}
+                  className="w-full"
+                >
+                  <TabsList className="w-full bg-muted grid grid-cols-3 h-8 md:h-11 p-1">
+                    <TabsTrigger value="image/jpeg" className="text-[9px] md:text-sm h-full font-bold">JPG</TabsTrigger>
+                    <TabsTrigger value="image/png" className="text-[9px] md:text-sm h-full font-bold">PNG</TabsTrigger>
+                    <TabsTrigger value="image/webp" className="text-[9px] md:text-sm h-full font-bold">WEBP</TabsTrigger>
+                  </TabsList>
+                </Tabs>
               </div>
 
               <SmartAiAdvice imageFile={file} onApply={handleAiApply} />
@@ -239,7 +236,7 @@ export const ResizerTool = () => {
                 </TabsContent>
               </Tabs>
 
-              <div className="bg-card border p-3 md:p-6 rounded-xl md:rounded-2xl">
+              <div className="bg-card border p-3 md:p-6 rounded-xl md:rounded-2xl hidden md:block">
                  <h4 className="font-semibold text-primary mb-2 md:mb-3 text-[10px] md:text-base">Details</h4>
                  <div className="space-y-2 md:space-y-3">
                    <div className="flex justify-between text-[9px] md:text-sm">
