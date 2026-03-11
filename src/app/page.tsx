@@ -1,6 +1,6 @@
 import React from 'react';
 import { ResizerTool } from '@/components/ImageResizer/ResizerTool';
-import { Layers, Zap, ShieldCheck, FileEdit } from 'lucide-react';
+import { Layers, Zap, ShieldCheck, PencilRuler } from 'lucide-react';
 
 export default function Home() {
   const jsonLd = {
@@ -54,10 +54,11 @@ export default function Home() {
               href="https://camly.org" 
               target="_blank" 
               rel="noreferrer" 
-              className="text-primary hover:text-accent transition-colors"
+              className="flex items-center gap-2 bg-primary/5 hover:bg-primary/10 px-3 py-1.5 rounded-full text-primary hover:text-accent transition-all group"
               title="Advanced PDF & Image Editor"
             >
-              <FileEdit className="w-5 h-5" />
+              <PencilRuler className="w-4 h-4 transition-transform group-hover:scale-110" />
+              <span className="text-xs font-bold hidden sm:inline">Camly Editor</span>
             </a>
           </div>
         </div>
@@ -154,9 +155,22 @@ export default function Home() {
                 Img<span className="text-accent">Resizer</span>
               </span>
             </div>
-            <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} ImgResizer.xyz. All rights reserved.
-            </p>
+            
+            <div className="flex flex-col items-center gap-3">
+              <p className="text-sm text-muted-foreground">
+                © {new Date().getFullYear()} ImgResizer.xyz. All rights reserved.
+              </p>
+              <a 
+                href="https://camly.org" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="flex items-center gap-2 text-xs font-bold text-muted-foreground hover:text-accent transition-colors bg-muted/30 px-3 py-1.5 rounded-full"
+              >
+                <PencilRuler className="w-3.5 h-3.5" />
+                Try Camly Advanced Editor
+              </a>
+            </div>
+
             <div className="flex gap-6">
               <a href="#" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Terms of Service</a>
               <a href="#" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Privacy Policy</a>
