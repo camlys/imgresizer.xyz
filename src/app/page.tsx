@@ -3,8 +3,36 @@ import { ResizerTool } from '@/components/ImageResizer/ResizerTool';
 import { Layers, Zap, ShieldCheck, Github } from 'lucide-react';
 
 export default function Home() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ImgResizer",
+    "operatingSystem": "Web",
+    "applicationCategory": "MultimediaApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "The professional tool for resizing images without losing quality. AI-powered compression settings for the perfect web optimization.",
+    "url": "https://www.imgresizer.xyz",
+    "featureList": [
+      "AI-powered compression recommendations",
+      "Browser-based processing (Privacy first)",
+      "Instant social media presets",
+      "Format conversion (JPG, PNG, WebP)",
+      "Interactive cropping and rotation"
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* Header */}
       <header className="border-b bg-white/80 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -18,7 +46,7 @@ export default function Home() {
           </div>
           <nav className="hidden md:flex items-center gap-8">
             <a href="#features" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Features</a>
-            <a href="#" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">API</a>
+            <a href="#why-us" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">About</a>
             <a href="#" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Privacy</a>
           </nav>
           <div className="flex items-center gap-4">
@@ -40,8 +68,8 @@ export default function Home() {
             Resize and Optimize Images <span className="text-accent">Intelligently</span>
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            The professional tool for resizing images without losing quality. 
-            AI-powered compression settings for the perfect web optimization.
+            The professional browser-based tool for resizing images without losing quality. 
+            Get AI-powered compression settings for perfect web optimization instantly.
           </p>
         </section>
 
@@ -55,52 +83,52 @@ export default function Home() {
               <div className="w-12 h-12 rounded-2xl bg-primary/5 flex items-center justify-center text-primary">
                 <Zap className="w-6 h-6" />
               </div>
-              <h3 className="text-xl font-bold text-primary">Lightning Fast</h3>
+              <h3 className="text-xl font-bold text-primary">Lightning Fast Resizing</h3>
               <p className="text-muted-foreground leading-relaxed">
-                Processing happens entirely in your browser. No server uploads, no waiting. Instant results for every resize operation.
+                Processing happens entirely in your browser. No server uploads means zero latency. Instant results for every resize, crop, or format change.
               </p>
             </div>
             <div className="space-y-4">
               <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center text-accent">
                 <ShieldCheck className="w-6 h-6" />
               </div>
-              <h3 className="text-xl font-bold text-primary">Privacy First</h3>
+              <h3 className="text-xl font-bold text-primary">Privacy-First Optimization</h3>
               <p className="text-muted-foreground leading-relaxed">
-                Your images never leave your computer. Privacy by design ensures your sensitive data stays local and secure.
+                Your images never leave your computer. Privacy by design ensures your sensitive data stays local, secure, and away from any cloud servers.
               </p>
             </div>
             <div className="space-y-4">
               <div className="w-12 h-12 rounded-2xl bg-primary/5 flex items-center justify-center text-primary">
                 <Layers className="w-6 h-6" />
               </div>
-              <h3 className="text-xl font-bold text-primary">AI Optimization</h3>
+              <h3 className="text-xl font-bold text-primary">AI Content Analysis</h3>
               <p className="text-muted-foreground leading-relaxed">
-                Intelligent content analysis suggests the best compression percentage and format based on your image type.
+                Intelligent content analysis suggests the optimal compression percentage and format (WebP, JPG, PNG) based on your specific image type.
               </p>
             </div>
           </div>
         </section>
 
         {/* SEO Content Section */}
-        <section className="mt-32 py-16 bg-white rounded-3xl border p-8 md:p-12">
+        <section id="why-us" className="mt-32 py-16 bg-white rounded-3xl border p-8 md:p-12">
           <div className="max-w-4xl mx-auto space-y-8">
             <div className="space-y-4">
-              <h2 className="text-3xl font-black text-primary">Why Use ImgResizer?</h2>
+              <h2 className="text-3xl font-black text-primary">Why ImgResizer is the Best Choice for Web Optimization</h2>
               <p className="text-muted-foreground leading-relaxed">
-                In today's fast-paced digital world, web performance is everything. Large images can slow down your website, hurting your SEO and user experience. ImgResizer provides a seamless, free, and lightweight solution to optimize your visual content for various platforms.
+                In today's fast-paced digital landscape, web performance is a critical ranking factor. Large, unoptimized images can slow down your website, hurting your SEO and user retention. ImgResizer provides a seamless, free, and lightweight solution to optimize visual content for any platform.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-3">
-                <h4 className="font-bold text-lg text-primary">Perfect for Social Media</h4>
+                <h4 className="font-bold text-lg text-primary">Optimized Social Media Graphics</h4>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Use our built-in presets for Instagram, Facebook, and YouTube to ensure your graphics always look sharp and fit perfectly without manual dimension calculations.
+                  Our tool includes built-in presets for Instagram, Facebook, YouTube, and LinkedIn. Ensure your posts always meet platform requirements with pixel-perfect dimensions without manual calculations.
                 </p>
               </div>
               <div className="space-y-3">
-                <h4 className="font-bold text-lg text-primary">Web-Ready Formats</h4>
+                <h4 className="font-bold text-lg text-primary">Next-Gen WebP Conversion</h4>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Convert your heavy PNGs and JPEGs to modern WebP formats with a single click, drastically reducing file sizes while maintaining professional visual fidelity.
+                  Drastically reduce file sizes by converting standard JPG and PNG files to modern WebP formats. ImgResizer maintains professional visual fidelity while maximizing your site's load speed.
                 </p>
               </div>
             </div>
@@ -121,12 +149,12 @@ export default function Home() {
               </span>
             </div>
             <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} ImgResizer. All rights reserved.
+              © {new Date().getFullYear()} ImgResizer.xyz. All rights reserved.
             </p>
             <div className="flex gap-6">
-              <a href="#" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Terms</a>
-              <a href="#" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Privacy</a>
-              <a href="#" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Contact</a>
+              <a href="#" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Terms of Service</a>
+              <a href="#" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Privacy Policy</a>
+              <a href="#" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Sitemap</a>
             </div>
           </div>
         </div>

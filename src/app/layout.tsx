@@ -3,9 +3,48 @@ import './globals.css';
 import {Toaster} from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'ImgResizer - Fast, Intelligent Image Resizing & Optimization',
-  description: 'Effortlessly resize and optimize your images with AI-powered compression recommendations. Free, fast, and fully responsive browser-based tool.',
-  keywords: 'image resizer, photo optimizer, ai image compression, bulk resize, webp converter, responsive image tool',
+  metadataBase: new URL('https://www.imgresizer.xyz'),
+  title: 'ImgResizer | Free AI Image Resizer & Optimizer Online',
+  description: 'Fast, secure, and intelligent image resizing. Resize images for Instagram, YouTube, and web with AI-powered quality optimization. No upload needed - runs entirely in your browser.',
+  keywords: [
+    'image resizer', 
+    'photo optimizer', 
+    'ai image compression', 
+    'resize images online', 
+    'webp converter', 
+    'bulk resize', 
+    'instagram image size',
+    'image crop tool',
+    'browser based image editor'
+  ],
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: 'ImgResizer | Fast & Intelligent Image Optimization',
+    description: 'Optimize your images with AI-powered compression recommendations. Privacy-first, browser-based resizing tool.',
+    url: 'https://www.imgresizer.xyz',
+    siteName: 'ImgResizer',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ImgResizer | Free AI Image Optimizer',
+    description: 'Resize and optimize images in your browser with AI insights. No server uploads, 100% private.',
+    creator: '@imgresizer',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export default function RootLayout({
