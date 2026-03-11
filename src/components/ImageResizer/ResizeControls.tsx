@@ -8,7 +8,9 @@ import { Switch } from '@/components/ui/switch';
 import { 
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -27,11 +29,36 @@ interface ResizeControlsProps {
   onChange: (params: ResizeParams) => void;
 }
 
-const PRESETS = [
-  { label: 'Social (1080x1080)', w: 1080, h: 1080 },
-  { label: 'YouTube (1280x720)', w: 1280, h: 720 },
-  { label: 'FB Cover (851x315)', w: 851, h: 315 },
-  { label: 'HD (1920x1080)', w: 1920, h: 1080 },
+const PRESET_GROUPS = [
+  {
+    label: "Social Media",
+    items: [
+      { label: 'Instagram Square (1080x1080)', w: 1080, h: 1080 },
+      { label: 'Instagram Story (1080x1920)', w: 1080, h: 1920 },
+      { label: 'Facebook Cover (851x315)', w: 851, h: 315 },
+      { label: 'Twitter Header (1500x500)', w: 1500, h: 500 },
+      { label: 'LinkedIn Cover (1584x396)', w: 1584, h: 396 },
+      { label: 'Pinterest Pin (1000x1500)', w: 1000, h: 1500 },
+    ]
+  },
+  {
+    label: "Video & Display",
+    items: [
+      { label: 'YouTube (1280x720)', w: 1280, h: 720 },
+      { label: 'Full HD (1920x1080)', w: 1920, h: 1080 },
+      { label: '2K QHD (2560x1440)', w: 2560, h: 1440 },
+      { label: '4K UHD (3840x2160)', w: 3840, h: 2160 },
+    ]
+  },
+  {
+    label: "Web & Desktop",
+    items: [
+      { label: 'Standard Web (1366x768)', w: 1366, h: 768 },
+      { label: 'MacBook 13" (2560x1600)', w: 2560, h: 1600 },
+      { label: 'MacBook 16" (3456x2234)', w: 3456, h: 2234 },
+      { label: 'Surface Pro (2880x1920)', w: 2880, h: 1920 },
+    ]
+  }
 ];
 
 export const ResizeControls: React.FC<ResizeControlsProps> = ({ 
@@ -67,8 +94,9 @@ export const ResizeControls: React.FC<ResizeControlsProps> = ({
     onChange({ ...params, percentage: p, width: w, height: h });
   };
 
-  const handlePresetChange = (presetKey: string) => {
-    const preset = PRESETS.find(p => p.label === presetKey);
+  const handlePresetChange = (presetLabel: string) => {
+    const allPresets = PRESET_GROUPS.flatMap(g => g.items);
+    const preset = allPresets.find(p => p.label === presetLabel);
     if (preset) {
       onChange({ ...params, width: preset.w, height: preset.h, lockAspectRatio: false });
     }
@@ -136,13 +164,18 @@ export const ResizeControls: React.FC<ResizeControlsProps> = ({
         <Label className="text-[8px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground">Presets</Label>
         <Select onValueChange={handlePresetChange}>
           <SelectTrigger className="h-7 md:h-11 px-2 md:px-3 text-[9px] md:text-sm focus:ring-accent">
-            <SelectValue placeholder="Sizes" />
+            <SelectValue placeholder="Standard Sizes" />
           </SelectTrigger>
-          <SelectContent>
-            {PRESETS.map((p) => (
-              <SelectItem key={p.label} value={p.label} className="text-[10px] md:text-sm">
-                {p.label}
-              </SelectItem>
+          <SelectContent className="max-h-[300px]">
+            {PRESET_GROUPS.map((group) => (
+              <SelectGroup key={group.label}>
+                <SelectLabel className="text-[8px] md:text-[10px] uppercase tracking-tighter text-muted-foreground/60">{group.label}</SelectLabel>
+                {group.items.map((p) => (
+                  <SelectItem key={p.label} value={p.label} className="text-[10px] md:text-sm">
+                    {p.label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
             ))}
           </SelectContent>
         </Select>
