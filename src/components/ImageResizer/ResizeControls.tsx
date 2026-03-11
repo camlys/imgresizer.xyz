@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Lock, Unlock, Percent, Move } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { 
   Select,
@@ -29,9 +28,9 @@ interface ResizeControlsProps {
 }
 
 const PRESETS = [
-  { label: 'Social Media Post (1080x1080)', w: 1080, h: 1080 },
-  { label: 'YouTube Thumbnail (1280x720)', w: 1280, h: 720 },
-  { label: 'Facebook Cover (851x315)', w: 851, h: 315 },
+  { label: 'Social (1080x1080)', w: 1080, h: 1080 },
+  { label: 'YouTube (1280x720)', w: 1280, h: 720 },
+  { label: 'FB Cover (851x315)', w: 851, h: 315 },
   { label: 'HD (1920x1080)', w: 1920, h: 1080 },
 ];
 
@@ -76,71 +75,72 @@ export const ResizeControls: React.FC<ResizeControlsProps> = ({
   };
 
   return (
-    <div className="space-y-6 bg-card p-6 rounded-2xl border border-border shadow-sm">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="font-semibold text-primary flex items-center gap-2">
-          <Move className="w-4 h-4" /> Resize Options
+    <div className="space-y-4 md:space-y-6 bg-card p-3 md:p-6 rounded-xl md:rounded-2xl border border-border shadow-sm">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
+        <h3 className="font-semibold text-primary flex items-center gap-1.5 text-xs md:text-base">
+          <Move className="w-3.5 h-3.5 md:w-4 h-4" /> Resize
         </h3>
-        <div className="flex items-center gap-2">
-          <Label htmlFor="aspect-lock" className="text-xs text-muted-foreground flex items-center gap-1 cursor-pointer">
-            {params.lockAspectRatio ? <Lock className="w-3 h-3" /> : <Unlock className="w-3 h-3" />}
-            Lock Ratio
+        <div className="flex items-center gap-1.5">
+          <Label htmlFor="aspect-lock" className="text-[9px] md:text-xs text-muted-foreground flex items-center gap-1 cursor-pointer">
+            {params.lockAspectRatio ? <Lock className="w-2.5 h-2.5 md:w-3 h-3" /> : <Unlock className="w-2.5 h-2.5 md:w-3 h-3" />}
+            Ratio
           </Label>
           <Switch 
             id="aspect-lock" 
             checked={params.lockAspectRatio} 
             onCheckedChange={(checked) => onChange({ ...params, lockAspectRatio: checked })} 
+            className="scale-75 md:scale-100 origin-right"
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Width (px)</Label>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
+        <div className="space-y-1.5">
+          <Label className="text-[9px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground">Width</Label>
           <Input 
             type="number" 
             value={params.width} 
             onChange={(e) => handleWidthChange(e.target.value)} 
-            className="h-11 font-medium focus:ring-accent"
+            className="h-8 md:h-11 text-xs md:text-sm font-medium focus:ring-accent"
           />
         </div>
-        <div className="space-y-2">
-          <Label className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Height (px)</Label>
+        <div className="space-y-1.5">
+          <Label className="text-[9px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground">Height</Label>
           <Input 
             type="number" 
             value={params.height} 
             onChange={(e) => handleHeightChange(e.target.value)} 
-            className="h-11 font-medium focus:ring-accent"
+            className="h-8 md:h-11 text-xs md:text-sm font-medium focus:ring-accent"
           />
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label className="text-xs font-medium uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-          <Percent className="w-3 h-3" /> Scale Percentage
+      <div className="space-y-1.5">
+        <Label className="text-[9px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+          <Percent className="w-2.5 h-2.5 md:w-3 h-3" /> Scale
         </Label>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 md:gap-4">
           <Input 
             type="range" 
             min="1" 
             max="200" 
             value={params.percentage} 
             onChange={(e) => handlePercentageChange(e.target.value)}
-            className="h-6 accent-accent"
+            className="h-4 md:h-6 accent-accent"
           />
-          <span className="text-sm font-semibold text-primary w-12 text-right">{params.percentage}%</span>
+          <span className="text-[10px] md:text-sm font-semibold text-primary w-8 md:w-12 text-right">{params.percentage}%</span>
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Quick Presets</Label>
+      <div className="space-y-1.5">
+        <Label className="text-[9px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground">Presets</Label>
         <Select onValueChange={handlePresetChange}>
-          <SelectTrigger className="h-11 focus:ring-accent">
-            <SelectValue placeholder="Choose a size preset" />
+          <SelectTrigger className="h-8 md:h-11 text-[10px] md:text-sm focus:ring-accent">
+            <SelectValue placeholder="Sizes" />
           </SelectTrigger>
           <SelectContent>
             {PRESETS.map((p) => (
-              <SelectItem key={p.label} value={p.label}>
+              <SelectItem key={p.label} value={p.label} className="text-[10px] md:text-sm">
                 {p.label}
               </SelectItem>
             ))}
