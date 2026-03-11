@@ -1,10 +1,12 @@
+
 "use client";
 
 import React from 'react';
-import { Lock, Unlock, Percent, Move } from 'lucide-react';
+import { Lock, Unlock, Percent, Move, RotateCw } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { Button } from '@/components/ui/button';
 import { 
   Select,
   SelectContent,
@@ -20,6 +22,7 @@ export interface ResizeParams {
   height: number | "";
   lockAspectRatio: boolean;
   percentage: number;
+  rotation: number;
 }
 
 interface ResizeControlsProps {
@@ -73,15 +76,15 @@ export const ResizeControls: React.FC<ResizeControlsProps> = ({
   originalHeight, 
   onChange 
 }) => {
-  const aspectRatio = originalWidth / originalHeight;
+  // If rotated 90 or 270, the effective source aspect ratio flips
+  const isVertical = params.rotation === 90 || params.rotation === 270;
+  const currentSourceW = isVertical ? originalHeight : originalWidth;
+  const currentSourceH = isVertical ? originalWidth : originalHeight;
+  const aspectRatio = currentSourceW / currentSourceH;
 
   const handleWidthChange = (val: string) => {
     if (val === "") {
-      if (params.lockAspectRatio) {
-        onChange({ ...params, width: "", height: "" });
-      } else {
-        onChange({ ...params, width: "" });
-      }
+      onChange({ ...params, width: "", height: params.lockAspectRatio ? "" : params.height });
       return;
     }
     const w = parseInt(val);
@@ -96,11 +99,7 @@ export const ResizeControls: React.FC<ResizeControlsProps> = ({
 
   const handleHeightChange = (val: string) => {
     if (val === "") {
-      if (params.lockAspectRatio) {
-        onChange({ ...params, width: "", height: "" });
-      } else {
-        onChange({ ...params, height: "" });
-      }
+      onChange({ ...params, height: "", width: params.lockAspectRatio ? "" : params.width });
       return;
     }
     const h = parseInt(val);
@@ -115,8 +114,8 @@ export const ResizeControls: React.FC<ResizeControlsProps> = ({
 
   const handlePercentageChange = (val: string) => {
     const p = parseInt(val) || 100;
-    const w = Math.round((originalWidth * p) / 100);
-    const h = Math.round((originalHeight * p) / 100);
+    const w = Math.round((currentSourceW * p) / 100);
+    const h = Math.round((currentSourceH * p) / 100);
     onChange({ ...params, percentage: p, width: w, height: h });
   };
 
@@ -124,8 +123,8 @@ export const ResizeControls: React.FC<ResizeControlsProps> = ({
     if (presetLabel === 'Original Size') {
       onChange({ 
         ...params, 
-        width: originalWidth, 
-        height: originalHeight, 
+        width: currentSourceW, 
+        height: currentSourceH, 
         percentage: 100,
         lockAspectRatio: true 
       });
@@ -137,6 +136,21 @@ export const ResizeControls: React.FC<ResizeControlsProps> = ({
     if (preset) {
       onChange({ ...params, width: preset.w, height: preset.h, lockAspectRatio: false });
     }
+  };
+
+  const cycleRotation = () => {
+    const nextRotation = (params.rotation + 90) % 360;
+    // Swap width/height if it's a 90 deg rotation transition
+    const isNowVertical = nextRotation === 90 || nextRotation === 270;
+    const newWidth = isNowVertical ? currentSourceH : currentSourceW;
+    const newHeight = isNowVertical ? currentSourceW : currentSourceH;
+    
+    onChange({ 
+      ...params, 
+      rotation: nextRotation,
+      width: Math.round((newWidth * params.percentage) / 100),
+      height: Math.round((newHeight * params.percentage) / 100)
+    });
   };
 
   return (
@@ -180,20 +194,28 @@ export const ResizeControls: React.FC<ResizeControlsProps> = ({
         </div>
       </div>
 
-      <div className="space-y-1.5">
-        <Label className="text-[8px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground flex items-center gap-1">
-          <Percent className="w-2.5 h-2.5 md:w-3 h-3" /> Scale
-        </Label>
-        <div className="flex items-center gap-2 md:gap-4">
-          <Input 
-            type="range" 
-            min="1" 
-            max="200" 
-            value={params.percentage} 
-            onChange={(e) => handlePercentageChange(e.target.value)}
-            className="h-4 md:h-6 accent-accent"
-          />
-          <span className="text-[9px] md:text-sm font-semibold text-primary w-6 md:w-12 text-right">{params.percentage}%</span>
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex-1 space-y-1.5">
+          <Label className="text-[8px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground flex items-center gap-1">
+            <Percent className="w-2.5 h-2.5 md:w-3 h-3" /> Scale
+          </Label>
+          <div className="flex items-center gap-2 md:gap-4">
+            <Input 
+              type="range" 
+              min="1" 
+              max="200" 
+              value={params.percentage} 
+              onChange={(e) => handlePercentageChange(e.target.value)}
+              className="h-4 md:h-6 accent-accent"
+            />
+            <span className="text-[9px] md:text-sm font-semibold text-primary w-6 md:w-12 text-right">{params.percentage}%</span>
+          </div>
+        </div>
+        <div className="shrink-0 space-y-1.5">
+           <Label className="text-[8px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground block text-center">Rotate</Label>
+           <Button variant="outline" size="icon" onClick={cycleRotation} className="h-7 w-7 md:h-11 md:w-11">
+             <RotateCw className="w-3.5 h-3.5 md:w-5 md:h-5" />
+           </Button>
         </div>
       </div>
 

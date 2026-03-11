@@ -1,7 +1,8 @@
+
 "use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { Download, RefreshCcw, Eye, ImageIcon, Settings2 } from 'lucide-react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { Download, RefreshCcw, Eye, ImageIcon, Settings2, Crop as CropIcon } from 'lucide-react';
 import { UploadZone } from './UploadZone';
 import { ResizeControls, ResizeParams } from './ResizeControls';
 import { SmartAiAdvice } from './SmartAiAdvice';
@@ -10,6 +11,8 @@ import { resizeImage, formatBytes, getFileExtension } from '@/lib/image-utils';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SmartCompressionRecommendationsOutput } from '@/ai/flows/smart-compression-recommendations';
 import { useToast } from '@/hooks/use-toast';
+import ReactCrop, { type Crop, type PixelCrop, centerCrop, makeAspectCrop } from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
 
 export const ResizerTool = () => {
   const { toast } = useToast();
@@ -19,7 +22,8 @@ export const ResizerTool = () => {
     width: 0,
     height: 0,
     lockAspectRatio: true,
-    percentage: 100
+    percentage: 100,
+    rotation: 0
   });
   const [outputSettings, setOutputSettings] = useState<{
     format: 'image/jpeg' | 'image/png' | 'image/webp';
@@ -31,6 +35,11 @@ export const ResizerTool = () => {
 
   const [resizedData, setResizedData] = useState<{ url: string; size: number } | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  
+  // Cropping State
+  const [crop, setCrop] = useState<Crop>();
+  const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
 
   const handleFileSelect = (selectedFile: File) => {
     const img = new Image();
@@ -41,8 +50,11 @@ export const ResizerTool = () => {
         width: img.width,
         height: img.height,
         lockAspectRatio: true,
-        percentage: 100
+        percentage: 100,
+        rotation: 0
       });
+      setCompletedCrop(null);
+      setCrop(undefined);
     };
     img.src = URL.createObjectURL(selectedFile);
   };
@@ -51,10 +63,11 @@ export const ResizerTool = () => {
     setFile(null);
     setOriginalMeta(null);
     setResizedData(null);
+    setCompletedCrop(null);
+    setCrop(undefined);
   };
 
   const processImage = useCallback(async () => {
-    // Only process if file exists and dimensions are valid numbers
     if (!file || typeof params.width !== 'number' || typeof params.height !== 'number' || params.width <= 0 || params.height <= 0) return;
     setIsProcessing(true);
     try {
@@ -62,7 +75,9 @@ export const ResizerTool = () => {
         width: params.width,
         height: params.height,
         format: outputSettings.format,
-        quality: outputSettings.quality
+        quality: outputSettings.quality,
+        rotation: params.rotation,
+        crop: completedCrop
       });
       setResizedData({ url: result.url, size: result.blob.size });
     } catch (err) {
@@ -74,7 +89,7 @@ export const ResizerTool = () => {
     } finally {
       setIsProcessing(false);
     }
-  }, [file, params, outputSettings, toast]);
+  }, [file, params, outputSettings, completedCrop, toast]);
 
   useEffect(() => {
     if (file) {
@@ -83,7 +98,7 @@ export const ResizerTool = () => {
       }, 500);
       return () => clearTimeout(timer);
     }
-  }, [file, params, outputSettings, processImage]);
+  }, [file, params, outputSettings, completedCrop, processImage]);
 
   const handleAiApply = (advice: SmartCompressionRecommendationsOutput) => {
     const formatMap: Record<string, 'image/jpeg' | 'image/png' | 'image/webp'> = {
@@ -111,12 +126,23 @@ export const ResizerTool = () => {
     document.body.removeChild(link);
   };
 
+  function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
+    const { width, height } = e.currentTarget;
+    setCrop(centerCrop(
+      makeAspectCrop(
+        { unit: '%', width: 90 },
+        1,
+        width,
+        height
+      ),
+      width,
+      height
+    ));
+  }
+
   return (
     <div className="max-w-7xl mx-auto">
-      {/* Forced two-column grid layout for both mobile and desktop as requested (5/12 split) */}
       <div className="grid grid-cols-12 gap-3 md:gap-8">
-        
-        {/* Left Column: Upload & Controls (5 columns) */}
         <div className="col-span-5 space-y-4 md:space-y-6">
           <UploadZone 
             onImageSelect={handleFileSelect} 
@@ -137,7 +163,6 @@ export const ResizerTool = () => {
                 <h3 className="font-semibold text-primary flex items-center gap-1.5 md:gap-2 text-xs md:text-base">
                   <Settings2 className="w-3.5 h-3.5 md:w-4 h-4" /> Format
                 </h3>
-                {/* Output format implemented as a tab function as requested */}
                 <Tabs 
                   value={outputSettings.format} 
                   onValueChange={(val) => setOutputSettings(prev => ({ ...prev, format: val as any }))}
@@ -156,22 +181,24 @@ export const ResizerTool = () => {
           )}
         </div>
 
-        {/* Right Column: Preview & Results (7 columns) */}
         <div className="col-span-7">
           {!file ? (
             <div className="h-full min-h-[300px] md:min-h-[400px] border-2 border-dashed border-border rounded-xl md:rounded-2xl flex flex-col items-center justify-center text-muted-foreground gap-3 bg-muted/20 px-4 text-center">
               <div className="w-12 h-12 md:w-20 md:h-20 rounded-full bg-border/50 flex items-center justify-center">
                 <ImageIcon className="w-6 h-6 md:w-10 md:h-10 opacity-30" />
               </div>
-              <p className="text-[10px] md:text-sm font-medium">Upload an image to see the preview here</p>
+              <p className="text-[10px] md:text-sm font-medium">Upload an image to start</p>
             </div>
           ) : (
             <div className="space-y-4 md:space-y-6 sticky top-20">
                <Tabs defaultValue="preview" className="w-full">
                 <div className="flex items-center justify-between mb-2 md:mb-4">
-                  <TabsList className="bg-muted h-8 md:h-10 p-0.5">
+                  <TabsList className="bg-muted h-8 md:h-10 p-0.5 grid grid-cols-3 w-48 md:w-72">
                     <TabsTrigger value="preview" className="flex items-center gap-1 md:gap-2 text-[10px] md:text-sm px-2 md:px-3 h-7 md:h-9">
                       <Eye className="w-3 h-3 md:w-4 h-4" /> Result
+                    </TabsTrigger>
+                    <TabsTrigger value="crop" className="flex items-center gap-1 md:gap-2 text-[10px] md:text-sm px-2 md:px-3 h-7 md:h-9">
+                      <CropIcon className="w-3 h-3 md:w-4 h-4" /> Crop
                     </TabsTrigger>
                     <TabsTrigger value="original" className="flex items-center gap-1 md:gap-2 text-[10px] md:text-sm px-2 md:px-3 h-7 md:h-9">
                       <ImageIcon className="w-3 h-3 md:w-4 h-4" /> Original
@@ -222,6 +249,28 @@ export const ResizerTool = () => {
                   </div>
                 </TabsContent>
 
+                <TabsContent value="crop" className="mt-0">
+                  <div className="relative rounded-xl md:rounded-2xl border-2 border-border bg-card overflow-auto shadow-lg md:shadow-xl aspect-square md:aspect-video flex items-center justify-center">
+                    <ReactCrop
+                      crop={crop}
+                      onChange={(c) => setCrop(c)}
+                      onComplete={(c) => setCompletedCrop(c)}
+                    >
+                      <img
+                        ref={imgRef}
+                        src={URL.createObjectURL(file)}
+                        alt="Crop target"
+                        onLoad={onImageLoad}
+                        style={{ transform: `rotate(${params.rotation}deg)` }}
+                        className="max-h-full max-w-full object-contain"
+                      />
+                    </ReactCrop>
+                  </div>
+                  <div className="mt-3 md:mt-4 p-3 md:p-4 border rounded-xl bg-accent/5 flex justify-between items-center text-[10px] md:text-sm font-medium">
+                     <span className="text-muted-foreground">Select an area to crop. Result will update automatically.</span>
+                  </div>
+                </TabsContent>
+
                 <TabsContent value="original" className="mt-0">
                   <div className="rounded-xl md:rounded-2xl border-2 border-border bg-card overflow-hidden shadow-lg md:shadow-xl aspect-square md:aspect-video flex items-center justify-center">
                     <img 
@@ -245,8 +294,12 @@ export const ResizerTool = () => {
                      <span className="font-semibold text-primary">{outputSettings.format.split('/')[1].toUpperCase()}</span>
                    </div>
                    <div className="flex justify-between text-[9px] md:text-sm">
-                     <span className="text-muted-foreground">Size</span>
+                     <span className="text-muted-foreground">Output Size</span>
                      <span className="font-semibold text-primary">{params.width} × {params.height} px</span>
+                   </div>
+                   <div className="flex justify-between text-[9px] md:text-sm">
+                     <span className="text-muted-foreground">Rotation</span>
+                     <span className="font-semibold text-primary">{params.rotation}°</span>
                    </div>
                    <div className="flex justify-between text-[9px] md:text-sm">
                      <span className="text-muted-foreground">Quality</span>
