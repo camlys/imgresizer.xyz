@@ -47,7 +47,7 @@ export default function Home() {
           <nav className="hidden md:flex items-center gap-8">
             <a href="#features" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Features</a>
             <a href="#why-us" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">About</a>
-            <a href="#" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Privacy</a>
+            <a href="/sitemap.xml" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Sitemap</a>
           </nav>
           <div className="flex items-center gap-4">
             <a 
@@ -173,7 +173,7 @@ export default function Home() {
               <nav className="flex flex-col gap-1 md:gap-2">
                 <a href="#features" className="text-[9px] md:text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Features</a>
                 <a href="#why-us" className="text-[9px] md:text-sm font-medium text-muted-foreground hover:text-accent transition-colors">About</a>
-                <a href="#" className="text-[9px] md:text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Sitemap</a>
+                <a href="/sitemap.xml" className="text-[9px] md:text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Sitemap</a>
               </nav>
             </div>
 
@@ -203,7 +203,7 @@ export default function Home() {
 
           <div className="mt-8 md:mt-16 pt-4 md:pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
             <p className="text-[9px] md:text-xs font-medium text-muted-foreground">
-              © {new Date().getFullYear()} ImgResizer.xyz
+              © 2025 ImgResizer.xyz
             </p>
             <div className="flex items-center gap-2 md:gap-4 text-[8px] md:text-[10px] uppercase tracking-tighter md:tracking-widest font-bold text-muted-foreground/40">
               <span>Private</span>
