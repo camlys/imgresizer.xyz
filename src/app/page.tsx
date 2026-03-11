@@ -145,35 +145,43 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="border-t bg-white mt-20">
-        <div className="max-w-7xl mx-auto px-4 py-12">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white shadow-lg">
-                <Layers className="w-4 h-4" />
+        <div className="max-w-7xl mx-auto px-4 py-12 md:py-16">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-10 md:gap-8">
+            {/* Branding */}
+            <div className="flex flex-col items-center md:items-start gap-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white shadow-lg">
+                  <Layers className="w-4 h-4" />
+                </div>
+                <span className="text-lg font-black tracking-tighter text-primary">
+                  Img<span className="text-accent">Resizer</span>
+                </span>
               </div>
-              <span className="text-lg font-black tracking-tighter text-primary">
-                Img<span className="text-accent">Resizer</span>
-              </span>
+              <p className="text-xs text-muted-foreground max-w-[200px] text-center md:text-left leading-relaxed">
+                Fast, private, and intelligent image optimization in your browser.
+              </p>
             </div>
             
-            <div className="flex flex-col items-center gap-3">
-              <p className="text-sm text-muted-foreground">
+            {/* Center Section: Copyright & CTA */}
+            <div className="flex flex-col items-center gap-4 text-center">
+              <p className="text-sm font-medium text-muted-foreground">
                 © {new Date().getFullYear()} ImgResizer.xyz. All rights reserved.
               </p>
               <a 
                 href="https://camly.org" 
                 target="_blank" 
                 rel="noreferrer" 
-                className="flex items-center gap-2 text-xs font-bold text-muted-foreground hover:text-accent transition-colors bg-muted/30 px-3 py-1.5 rounded-full"
+                className="flex items-center gap-2 text-xs font-bold text-muted-foreground hover:text-accent transition-all bg-muted/30 hover:bg-muted/50 px-5 py-2.5 rounded-full border border-transparent hover:border-accent/20 group"
               >
-                <PencilRuler className="w-3.5 h-3.5" />
+                <PencilRuler className="w-4 h-4 text-accent transition-transform group-hover:rotate-12" />
                 Try Camly Advanced Editor
               </a>
             </div>
 
-            <div className="flex gap-6">
-              <a href="#" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Terms of Service</a>
-              <a href="#" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Privacy Policy</a>
+            {/* Links */}
+            <div className="flex flex-wrap justify-center gap-x-8 gap-y-4">
+              <a href="#" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Terms</a>
+              <a href="#" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Privacy</a>
               <a href="#" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Sitemap</a>
             </div>
           </div>
