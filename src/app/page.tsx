@@ -190,11 +190,11 @@ export default function Home() {
                 href="https://camly.org" 
                 target="_blank" 
                 rel="noreferrer" 
-                className="inline-flex items-center gap-1 md:gap-2.5 text-[8px] md:text-xs font-bold text-primary bg-primary/5 hover:bg-primary/10 px-2 md:px-6 py-1.5 md:py-3 rounded-full border border-primary/10 transition-all group"
+                className="group inline-flex items-center gap-1 md:gap-2.5 px-2 md:px-5 py-1.5 md:py-2.5 text-[8px] md:text-xs font-bold transition-all duration-300 bg-white border border-primary/10 rounded-full hover:border-accent/50 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] hover:shadow-accent/10 active:scale-95"
               >
                 <PencilRuler className="w-3 h-3 md:w-4 md:h-4 text-accent transition-transform group-hover:rotate-12" />
-                <span className="hidden sm:inline">Advanced Editor</span>
-                <span className="sm:hidden">Camly</span>
+                <span className="text-primary group-hover:text-accent transition-colors hidden sm:inline">Advanced Editor</span>
+                <span className="sm:hidden text-primary group-hover:text-accent transition-colors">Camly</span>
               </a>
             </div>
           </div>
