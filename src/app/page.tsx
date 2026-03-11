@@ -1,6 +1,7 @@
 import React from 'react';
 import { ResizerTool } from '@/components/ImageResizer/ResizerTool';
 import { Layers, Zap, ShieldCheck, PencilRuler } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Home() {
   const jsonLd = {
@@ -46,7 +47,7 @@ export default function Home() {
           </div>
           <nav className="hidden md:flex items-center gap-8">
             <a href="#features" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Features</a>
-            <a href="#why-us" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">About</a>
+            <Link href="/about" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">About</Link>
             <a href="/sitemap.xml" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Sitemap</a>
           </nav>
           <div className="flex items-center gap-4">
@@ -172,7 +173,7 @@ export default function Home() {
               <h4 className="font-bold text-primary text-[10px] md:text-base">Product</h4>
               <nav className="flex flex-col gap-1 md:gap-2">
                 <a href="#features" className="text-[9px] md:text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Features</a>
-                <a href="#why-us" className="text-[9px] md:text-sm font-medium text-muted-foreground hover:text-accent transition-colors">About</a>
+                <Link href="/about" className="text-[9px] md:text-sm font-medium text-muted-foreground hover:text-accent transition-colors">About</Link>
                 <a href="/sitemap.xml" className="text-[9px] md:text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Sitemap</a>
               </nav>
             </div>
