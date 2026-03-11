@@ -17,16 +17,16 @@ export const resizeImage = (
     reader.onload = (event) => {
       const img = new Image();
       img.onload = () => {
-        // Intermediate canvas for cropping and rotation
-        const stageCanvas = document.createElement('canvas');
-        const stageCtx = stageCanvas.getContext('2d');
-        if (!stageCtx) return reject(new Error('Could not get canvas context'));
-
         // Handle crop boundaries
         const sourceX = options.crop ? options.crop.x : 0;
         const sourceY = options.crop ? options.crop.y : 0;
         const sourceW = options.crop ? options.crop.width : img.width;
         const sourceH = options.crop ? options.crop.height : img.height;
+
+        // Intermediate canvas for cropping and rotation
+        const stageCanvas = document.createElement('canvas');
+        const stageCtx = stageCanvas.getContext('2d');
+        if (!stageCtx) return reject(new Error('Could not get canvas context'));
 
         // Determine stage dimensions based on rotation
         const isVertical = options.rotation === 90 || options.rotation === 270;
@@ -45,6 +45,7 @@ export const resizeImage = (
         );
 
         // Final canvas for resizing
+        // Ensure no stretching: the final canvas MUST match requested dimensions
         const canvas = document.createElement('canvas');
         canvas.width = options.width;
         canvas.height = options.height;
@@ -52,6 +53,7 @@ export const resizeImage = (
         if (!ctx) return reject(new Error('Could not get canvas context'));
 
         // Draw the processed stage to the final size
+        // We use the full width/height of the requested output
         ctx.drawImage(stageCanvas, 0, 0, options.width, options.height);
 
         canvas.toBlob(

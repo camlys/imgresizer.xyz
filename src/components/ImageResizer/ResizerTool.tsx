@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { Download, RefreshCcw, Eye, ImageIcon, Settings2, Crop as CropIcon } from 'lucide-react';
 import { UploadZone } from './UploadZone';
 import { ResizeControls, ResizeParams } from './ResizeControls';
@@ -53,6 +53,21 @@ export const ResizerTool = () => {
     return () => URL.revokeObjectURL(url);
   }, [file]);
 
+  // Determine the "effective" original dimensions (either full image or crop area in natural pixels)
+  const effectiveBaseSize = useMemo(() => {
+    if (!originalMeta) return { w: 0, h: 0 };
+    if (!completedCrop || !imgRef.current) return { w: originalMeta.w, h: originalMeta.h };
+
+    const img = imgRef.current;
+    const scaleX = img.naturalWidth / img.width;
+    const scaleY = img.naturalHeight / img.height;
+
+    return {
+      w: Math.round(completedCrop.width * scaleX),
+      h: Math.round(completedCrop.height * scaleY)
+    };
+  }, [originalMeta, completedCrop]);
+
   const handleFileSelect = (selectedFile: File) => {
     const img = new Image();
     img.onload = () => {
@@ -71,6 +86,17 @@ export const ResizerTool = () => {
     img.src = URL.createObjectURL(selectedFile);
   };
 
+  // Sync dimensions when crop changes to prevent stretching
+  useEffect(() => {
+    if (completedCrop && effectiveBaseSize.w > 0) {
+      setParams(prev => ({
+        ...prev,
+        width: Math.round((effectiveBaseSize.w * prev.percentage) / 100),
+        height: Math.round((effectiveBaseSize.h * prev.percentage) / 100)
+      }));
+    }
+  }, [completedCrop, effectiveBaseSize.w, effectiveBaseSize.h]);
+
   const handleClear = () => {
     setFile(null);
     setOriginalMeta(null);
@@ -83,11 +109,9 @@ export const ResizerTool = () => {
     if (!file || typeof params.width !== 'number' || typeof params.height !== 'number' || params.width <= 0 || params.height <= 0) return;
     setIsProcessing(true);
     try {
-      // Calculate normalized pixel crop relative to source image dimensions
       let finalCrop = null;
       if (completedCrop && imgRef.current) {
         const img = imgRef.current;
-        // Map UI crop coordinates to natural image pixels
         const scaleX = img.naturalWidth / img.width;
         const scaleY = img.naturalHeight / img.height;
         
@@ -119,7 +143,6 @@ export const ResizerTool = () => {
     }
   }, [file, params, outputSettings, completedCrop, toast]);
 
-  // Debounced processing
   useEffect(() => {
     if (file) {
       const timer = setTimeout(() => {
@@ -174,7 +197,6 @@ export const ResizerTool = () => {
   return (
     <div className="max-w-7xl mx-auto">
       <div className="grid grid-cols-12 gap-3 md:gap-8">
-        {/* Left Column (5/12) */}
         <div className="col-span-5 space-y-4 md:space-y-6">
           <UploadZone 
             onImageSelect={handleFileSelect} 
@@ -188,8 +210,8 @@ export const ResizerTool = () => {
               <ResizeControls 
                 params={params} 
                 onChange={setParams} 
-                originalWidth={originalMeta.w} 
-                originalHeight={originalMeta.h} 
+                originalWidth={effectiveBaseSize.w} 
+                originalHeight={effectiveBaseSize.h} 
               />
 
               <div className="bg-card p-3 md:p-6 rounded-xl md:rounded-2xl border border-border shadow-sm space-y-3 md:space-y-4">
@@ -214,7 +236,6 @@ export const ResizerTool = () => {
           )}
         </div>
 
-        {/* Right Column (7/12) */}
         <div className="col-span-7">
           {!file ? (
             <div className="h-full min-h-[300px] md:min-h-[400px] border-2 border-dashed border-border rounded-xl md:rounded-2xl flex flex-col items-center justify-center text-muted-foreground gap-3 bg-muted/20 px-4 text-center">
@@ -284,7 +305,7 @@ export const ResizerTool = () => {
                 </TabsContent>
 
                 <TabsContent value="crop" className="mt-0">
-                  <div className="relative rounded-xl md:rounded-2xl border-2 border-border bg-neutral-900 overflow-auto shadow-lg md:shadow-xl aspect-square md:aspect-video flex items-center justify-center">
+                  <div className="relative rounded-xl md:rounded-2xl border-2 border-border bg-neutral-900 overflow-hidden shadow-lg md:shadow-xl aspect-square md:aspect-video flex items-center justify-center">
                     {imageUrl && (
                       <ReactCrop
                         crop={crop}
@@ -303,7 +324,7 @@ export const ResizerTool = () => {
                     )}
                   </div>
                   <div className="mt-3 md:mt-4 p-2 md:p-4 border rounded-xl bg-accent/5 flex justify-between items-center text-[8px] md:text-sm font-medium">
-                     <span className="text-muted-foreground">Adjust handles to crop. Syncs automatically.</span>
+                     <span className="text-muted-foreground">Adjust handles to crop. Synchronized with Resize controls.</span>
                   </div>
                 </TabsContent>
 
