@@ -76,11 +76,11 @@ export const ResizeControls: React.FC<ResizeControlsProps> = ({
 
   return (
     <div className="space-y-4 md:space-y-6 bg-card p-3 md:p-6 rounded-xl md:rounded-2xl border border-border shadow-sm">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
-        <h3 className="font-semibold text-primary flex items-center gap-1.5 text-xs md:text-base">
+      <div className="flex items-center justify-between gap-2">
+        <h3 className="font-semibold text-primary flex items-center gap-1.5 text-xs md:text-base whitespace-nowrap">
           <Move className="w-3.5 h-3.5 md:w-4 h-4" /> Resize
         </h3>
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 shrink-0">
           <Label htmlFor="aspect-lock" className="text-[9px] md:text-xs text-muted-foreground flex items-center gap-1 cursor-pointer">
             {params.lockAspectRatio ? <Lock className="w-2.5 h-2.5 md:w-3 h-3" /> : <Unlock className="w-2.5 h-2.5 md:w-3 h-3" />}
             Ratio
@@ -94,29 +94,29 @@ export const ResizeControls: React.FC<ResizeControlsProps> = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
-        <div className="space-y-1.5">
-          <Label className="text-[9px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground">Width</Label>
+      <div className="grid grid-cols-2 gap-2 md:gap-4">
+        <div className="space-y-1 md:space-y-1.5">
+          <Label className="text-[8px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground">Width</Label>
           <Input 
             type="number" 
             value={params.width} 
             onChange={(e) => handleWidthChange(e.target.value)} 
-            className="h-8 md:h-11 text-xs md:text-sm font-medium focus:ring-accent"
+            className="h-7 md:h-11 px-2 md:px-3 text-[10px] md:text-sm font-medium focus:ring-accent"
           />
         </div>
-        <div className="space-y-1.5">
-          <Label className="text-[9px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground">Height</Label>
+        <div className="space-y-1 md:space-y-1.5">
+          <Label className="text-[8px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground">Height</Label>
           <Input 
             type="number" 
             value={params.height} 
             onChange={(e) => handleHeightChange(e.target.value)} 
-            className="h-8 md:h-11 text-xs md:text-sm font-medium focus:ring-accent"
+            className="h-7 md:h-11 px-2 md:px-3 text-[10px] md:text-sm font-medium focus:ring-accent"
           />
         </div>
       </div>
 
       <div className="space-y-1.5">
-        <Label className="text-[9px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+        <Label className="text-[8px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground flex items-center gap-1">
           <Percent className="w-2.5 h-2.5 md:w-3 h-3" /> Scale
         </Label>
         <div className="flex items-center gap-2 md:gap-4">
@@ -128,14 +128,14 @@ export const ResizeControls: React.FC<ResizeControlsProps> = ({
             onChange={(e) => handlePercentageChange(e.target.value)}
             className="h-4 md:h-6 accent-accent"
           />
-          <span className="text-[10px] md:text-sm font-semibold text-primary w-8 md:w-12 text-right">{params.percentage}%</span>
+          <span className="text-[9px] md:text-sm font-semibold text-primary w-6 md:w-12 text-right">{params.percentage}%</span>
         </div>
       </div>
 
       <div className="space-y-1.5">
-        <Label className="text-[9px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground">Presets</Label>
+        <Label className="text-[8px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground">Presets</Label>
         <Select onValueChange={handlePresetChange}>
-          <SelectTrigger className="h-8 md:h-11 text-[10px] md:text-sm focus:ring-accent">
+          <SelectTrigger className="h-7 md:h-11 px-2 md:px-3 text-[9px] md:text-sm focus:ring-accent">
             <SelectValue placeholder="Sizes" />
           </SelectTrigger>
           <SelectContent>
