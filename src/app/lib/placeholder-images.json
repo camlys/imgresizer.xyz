@@ -1,0 +1,10 @@
+{
+  "placeholderImages": [
+    {
+      "id": "hero-image",
+      "description": "Abstract geometric shapes representing image layers and digital precision",
+      "imageUrl": "https://picsum.photos/seed/imgresizer1/1200/600",
+      "imageHint": "abstract digital"
+    }
+  ]
+}
