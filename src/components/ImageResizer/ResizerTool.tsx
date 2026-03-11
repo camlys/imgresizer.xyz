@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { Download, RefreshCcw, Eye, ImageIcon, Settings2, Crop as CropIcon } from 'lucide-react';
 import { UploadZone } from './UploadZone';
 import { ResizeControls, ResizeParams } from './ResizeControls';
@@ -17,6 +17,7 @@ import 'react-image-crop/dist/ReactCrop.css';
 export const ResizerTool = () => {
   const { toast } = useToast();
   const [file, setFile] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState<string>("");
   const [originalMeta, setOriginalMeta] = useState<{ w: number; h: number } | null>(null);
   const [params, setParams] = useState<ResizeParams>({
     width: 0,
@@ -40,6 +41,17 @@ export const ResizerTool = () => {
   const [crop, setCrop] = useState<Crop>();
   const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
   const imgRef = useRef<HTMLImageElement>(null);
+
+  // Manage object URL lifecycle
+  useEffect(() => {
+    if (!file) {
+      setImageUrl("");
+      return;
+    }
+    const url = URL.createObjectURL(file);
+    setImageUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [file]);
 
   const handleFileSelect = (selectedFile: File) => {
     const img = new Image();
@@ -91,6 +103,7 @@ export const ResizerTool = () => {
     }
   }, [file, params, outputSettings, completedCrop, toast]);
 
+  // Debounced processing
   useEffect(() => {
     if (file) {
       const timer = setTimeout(() => {
@@ -128,16 +141,18 @@ export const ResizerTool = () => {
 
   function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
     const { width, height } = e.currentTarget;
-    setCrop(centerCrop(
-      makeAspectCrop(
-        { unit: '%', width: 90 },
-        1,
+    if (!crop) {
+      setCrop(centerCrop(
+        makeAspectCrop(
+          { unit: '%', width: 90 },
+          1,
+          width,
+          height
+        ),
         width,
         height
-      ),
-      width,
-      height
-    ));
+      ));
+    }
   }
 
   return (
@@ -148,6 +163,7 @@ export const ResizerTool = () => {
             onImageSelect={handleFileSelect} 
             selectedFile={file} 
             onClear={handleClear} 
+            imageUrl={imageUrl}
           />
           
           {file && originalMeta && (
@@ -251,20 +267,22 @@ export const ResizerTool = () => {
 
                 <TabsContent value="crop" className="mt-0">
                   <div className="relative rounded-xl md:rounded-2xl border-2 border-border bg-card overflow-auto shadow-lg md:shadow-xl aspect-square md:aspect-video flex items-center justify-center">
-                    <ReactCrop
-                      crop={crop}
-                      onChange={(c) => setCrop(c)}
-                      onComplete={(c) => setCompletedCrop(c)}
-                    >
-                      <img
-                        ref={imgRef}
-                        src={URL.createObjectURL(file)}
-                        alt="Crop target"
-                        onLoad={onImageLoad}
-                        style={{ transform: `rotate(${params.rotation}deg)` }}
-                        className="max-h-full max-w-full object-contain"
-                      />
-                    </ReactCrop>
+                    {imageUrl && (
+                      <ReactCrop
+                        crop={crop}
+                        onChange={(c) => setCrop(c)}
+                        onComplete={(c) => setCompletedCrop(c)}
+                      >
+                        <img
+                          ref={imgRef}
+                          src={imageUrl}
+                          alt="Crop target"
+                          onLoad={onImageLoad}
+                          style={{ transform: `rotate(${params.rotation}deg)` }}
+                          className="max-h-full max-w-full object-contain"
+                        />
+                      </ReactCrop>
+                    )}
                   </div>
                   <div className="mt-3 md:mt-4 p-3 md:p-4 border rounded-xl bg-accent/5 flex justify-between items-center text-[10px] md:text-sm font-medium">
                      <span className="text-muted-foreground">Select an area to crop. Result will update automatically.</span>
@@ -273,11 +291,13 @@ export const ResizerTool = () => {
 
                 <TabsContent value="original" className="mt-0">
                   <div className="rounded-xl md:rounded-2xl border-2 border-border bg-card overflow-hidden shadow-lg md:shadow-xl aspect-square md:aspect-video flex items-center justify-center">
-                    <img 
-                      src={URL.createObjectURL(file)} 
-                      alt="Original Preview" 
-                      className="max-h-full max-w-full object-contain"
-                    />
+                    {imageUrl && (
+                      <img 
+                        src={imageUrl} 
+                        alt="Original Preview" 
+                        className="max-h-full max-w-full object-contain"
+                      />
+                    )}
                   </div>
                   <div className="mt-3 md:mt-4 p-3 md:p-4 border rounded-xl flex justify-between items-center text-[10px] md:text-sm font-medium">
                      <span className="text-muted-foreground">Original Dimensions:</span>

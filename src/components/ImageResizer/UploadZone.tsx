@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useCallback, useState } from 'react';
@@ -9,9 +10,10 @@ interface UploadZoneProps {
   onImageSelect: (file: File) => void;
   selectedFile: File | null;
   onClear: () => void;
+  imageUrl?: string;
 }
 
-export const UploadZone: React.FC<UploadZoneProps> = ({ onImageSelect, selectedFile, onClear }) => {
+export const UploadZone: React.FC<UploadZoneProps> = ({ onImageSelect, selectedFile, onClear, imageUrl }) => {
   const [isDragging, setIsDragging] = useState(false);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -40,11 +42,11 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ onImageSelect, selectedF
     }
   };
 
-  if (selectedFile) {
+  if (selectedFile && imageUrl) {
     return (
       <div className="relative group rounded-xl overflow-hidden border-2 border-border bg-card shadow-sm aspect-video flex items-center justify-center">
         <img
-          src={URL.createObjectURL(selectedFile)}
+          src={imageUrl}
           alt="Original preview"
           className="max-h-full max-w-full object-contain"
         />
@@ -54,7 +56,7 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ onImageSelect, selectedF
            </Button>
         </div>
         <div className="absolute bottom-4 left-4 right-4 text-white text-xs bg-black/50 px-3 py-1.5 rounded-full backdrop-blur-md flex justify-between">
-          <span>{selectedFile.name}</span>
+          <span className="truncate max-w-[150px]">{selectedFile.name}</span>
           <span>{(selectedFile.size / 1024).toFixed(1)} KB</span>
         </div>
       </div>
