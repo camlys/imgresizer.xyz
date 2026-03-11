@@ -26,7 +26,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Structured Data for SEO */}
       <script
         type="application/ld+json"
@@ -54,11 +54,16 @@ export default function Home() {
               href="https://camly.org" 
               target="_blank" 
               rel="noreferrer" 
-              className="flex items-center gap-2 bg-primary/5 hover:bg-primary/10 px-3 py-1.5 rounded-full text-primary hover:text-accent transition-all group"
+              className="group relative inline-flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-bold transition-all duration-300 bg-white border border-primary/10 rounded-full hover:border-accent/50 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.07)] hover:shadow-accent/20 active:scale-95"
               title="Advanced PDF & Image Editor"
             >
-              <PencilRuler className="w-4 h-4 transition-transform group-hover:scale-110" />
-              <span className="text-xs font-bold hidden sm:inline">Camly Editor</span>
+              <PencilRuler className="w-3.5 h-3.5 md:w-4 md:h-4 text-accent transition-transform group-hover:rotate-12" />
+              <span className="text-primary group-hover:text-accent transition-colors hidden sm:inline">Camly Editor</span>
+              <span className="sm:hidden text-primary group-hover:text-accent transition-colors">Camly</span>
+              <span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
+              </span>
             </a>
           </div>
         </div>
