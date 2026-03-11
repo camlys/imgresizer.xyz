@@ -329,7 +329,7 @@ export const ResizerTool = () => {
                 </TabsContent>
 
                 <TabsContent value="original" className="mt-0">
-                  <div className="rounded-xl md:rounded-2xl border-2 border-border bg-neutral-900 overflow-hidden shadow-lg md:shadow-xl aspect-square md:aspect-video flex items-center justify-center p-2">
+                  <div className="relative rounded-xl md:rounded-2xl border-2 border-border bg-neutral-900 overflow-hidden shadow-lg md:shadow-xl aspect-square md:aspect-video flex items-center justify-center p-2">
                     {imageUrl && (
                       <img 
                         src={imageUrl} 

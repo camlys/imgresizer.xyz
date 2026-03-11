@@ -44,7 +44,7 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ onImageSelect, selectedF
 
   if (selectedFile && imageUrl) {
     return (
-      <div className="relative group rounded-xl overflow-hidden border-2 border-border bg-card shadow-sm aspect-video flex items-center justify-center">
+      <div className="relative group rounded-xl overflow-hidden border-2 border-border bg-neutral-900 shadow-sm aspect-video flex items-center justify-center p-2">
         <img
           src={imageUrl}
           alt="Original preview"
@@ -55,9 +55,9 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ onImageSelect, selectedF
               <X className="w-4 h-4 mr-2" /> Remove
            </Button>
         </div>
-        <div className="absolute bottom-4 left-4 right-4 text-white text-xs bg-black/50 px-3 py-1.5 rounded-full backdrop-blur-md flex justify-between">
-          <span className="truncate max-w-[150px]">{selectedFile.name}</span>
-          <span>{(selectedFile.size / 1024).toFixed(1)} KB</span>
+        <div className="absolute bottom-4 left-4 right-4 text-white text-[10px] bg-black/60 px-3 py-1.5 rounded-full backdrop-blur-md flex justify-between items-center">
+          <span className="truncate max-w-[120px] font-medium">{selectedFile.name}</span>
+          <span className="font-bold opacity-80">{(selectedFile.size / 1024).toFixed(1)} KB</span>
         </div>
       </div>
     );
