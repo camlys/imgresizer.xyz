@@ -16,8 +16,8 @@ import {
 } from "@/components/ui/select";
 
 export interface ResizeParams {
-  width: number;
-  height: number;
+  width: number | "";
+  height: number | "";
   lockAspectRatio: boolean;
   percentage: number;
 }
@@ -76,7 +76,17 @@ export const ResizeControls: React.FC<ResizeControlsProps> = ({
   const aspectRatio = originalWidth / originalHeight;
 
   const handleWidthChange = (val: string) => {
-    const w = parseInt(val) || 0;
+    if (val === "") {
+      if (params.lockAspectRatio) {
+        onChange({ ...params, width: "", height: "" });
+      } else {
+        onChange({ ...params, width: "" });
+      }
+      return;
+    }
+    const w = parseInt(val);
+    if (isNaN(w)) return;
+
     if (params.lockAspectRatio) {
       onChange({ ...params, width: w, height: Math.round(w / aspectRatio) });
     } else {
@@ -85,7 +95,17 @@ export const ResizeControls: React.FC<ResizeControlsProps> = ({
   };
 
   const handleHeightChange = (val: string) => {
-    const h = parseInt(val) || 0;
+    if (val === "") {
+      if (params.lockAspectRatio) {
+        onChange({ ...params, width: "", height: "" });
+      } else {
+        onChange({ ...params, height: "" });
+      }
+      return;
+    }
+    const h = parseInt(val);
+    if (isNaN(h)) return;
+
     if (params.lockAspectRatio) {
       onChange({ ...params, height: h, width: Math.round(h * aspectRatio) });
     } else {

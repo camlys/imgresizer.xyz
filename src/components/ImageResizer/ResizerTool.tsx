@@ -54,7 +54,8 @@ export const ResizerTool = () => {
   };
 
   const processImage = useCallback(async () => {
-    if (!file || !params.width || !params.height) return;
+    // Only process if file exists and dimensions are valid numbers
+    if (!file || typeof params.width !== 'number' || typeof params.height !== 'number' || params.width <= 0 || params.height <= 0) return;
     setIsProcessing(true);
     try {
       const result = await resizeImage(file, {
