@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
@@ -205,7 +204,6 @@ export const ResizerTool = () => {
   return (
     <div className="max-w-7xl mx-auto">
       <div className="grid grid-cols-2 md:grid-cols-12 gap-3 md:gap-8">
-        {/* Controls Column - Now order-1 on mobile and order-2 on desktop */}
         <div className="col-span-1 md:col-span-5 space-y-3 md:space-y-6 order-1 md:order-2">
           <UploadZone 
             onImageSelect={handleFileSelect} 
@@ -245,7 +243,6 @@ export const ResizerTool = () => {
           )}
         </div>
 
-        {/* Preview Column - Now order-2 on mobile and order-1 on desktop */}
         <div className="col-span-1 md:col-span-7 order-2 md:order-1">
           {!file ? (
             <div className="h-full min-h-[300px] md:min-h-[400px] border-2 border-dashed border-border rounded-2xl flex flex-col items-center justify-center text-muted-foreground gap-2 md:gap-3 bg-muted/20 px-4 text-center">
@@ -278,8 +275,7 @@ export const ResizerTool = () => {
                 </div>
 
                 <TabsContent value="preview" className="mt-0">
-                  {/* Flexible height container with generous 2mm+ padding (p-12) */}
-                  <div className="relative rounded-2xl border-2 border-border bg-neutral-900 overflow-hidden shadow-xl min-h-[350px] md:min-h-[500px] flex items-center justify-center p-8 md:p-20">
+                  <div className="relative rounded-2xl border-2 border-border bg-neutral-900 overflow-hidden shadow-xl min-h-[350px] md:w-[75mm] md:h-[100mm] md:min-h-0 mx-auto flex items-center justify-center p-4 md:p-6">
                     {resizedData && (
                       <img 
                         src={resizedData.url} 
@@ -319,8 +315,7 @@ export const ResizerTool = () => {
                 </TabsContent>
 
                 <TabsContent value="crop" className="mt-0">
-                  {/* Flexible height container with generous 2mm+ padding (p-12) */}
-                  <div className="relative rounded-2xl border-2 border-border bg-neutral-900 overflow-hidden shadow-xl min-h-[350px] md:min-h-[500px] flex items-center justify-center p-8 md:p-20">
+                  <div className="relative rounded-2xl border-2 border-border bg-neutral-900 overflow-hidden shadow-xl min-h-[350px] md:w-[75mm] md:h-[100mm] md:min-h-0 mx-auto flex items-center justify-center p-4 md:p-6">
                     <div className="absolute top-2 left-2 md:top-4 md:left-4 z-20 flex flex-col gap-1.5 md:gap-2">
                       <Badge variant="secondary" className="bg-black/60 text-white border-none backdrop-blur-md px-2 py-0.5 md:px-3 md:py-1 font-mono text-[8px] md:text-[10px]">
                         ORIGINAL: {originalMeta.w} × {originalMeta.h} px
@@ -343,7 +338,7 @@ export const ResizerTool = () => {
                           src={imageUrl}
                           alt="Crop target"
                           onLoad={onImageLoad}
-                          style={{ display: 'block', maxWidth: '100%', maxHeight: '450px' }}
+                          style={{ display: 'block', maxWidth: '100%', maxHeight: 'calc(100mm - 48px)' }}
                           className="object-contain"
                         />
                       </ReactCrop>
@@ -360,7 +355,7 @@ export const ResizerTool = () => {
                 </TabsContent>
 
                 <TabsContent value="original" className="mt-0">
-                  <div className="relative rounded-2xl border-2 border-border bg-neutral-900 overflow-hidden shadow-xl min-h-[350px] md:min-h-[500px] flex items-center justify-center p-8 md:p-20">
+                  <div className="relative rounded-2xl border-2 border-border bg-neutral-900 overflow-hidden shadow-xl min-h-[350px] md:w-[75mm] md:h-[100mm] md:min-h-0 mx-auto flex items-center justify-center p-4 md:p-6">
                     {imageUrl && (
                       <img 
                         src={imageUrl} 
