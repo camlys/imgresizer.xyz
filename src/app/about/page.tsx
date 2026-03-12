@@ -1,31 +1,13 @@
 import React from 'react';
-import { Layers, ShieldCheck, Zap, Sparkles, Globe, Cpu, ArrowLeft } from 'lucide-react';
+import { ShieldCheck, Zap, Sparkles, Globe, Cpu, Layers } from 'lucide-react';
+import { SiteHeader } from '@/components/SiteHeader';
 import Link from 'next/link';
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5 hover:opacity-90 transition-opacity">
-            <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg">
-              <Layers className="w-5 h-5" />
-            </div>
-            <span className="text-xl font-black tracking-tighter text-primary">
-              Img<span className="text-accent">Resizer</span>
-            </span>
-          </Link>
-          <nav className="hidden md:flex items-center gap-8">
-            <Link href="/#features" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Features</Link>
-            <Link href="/about" className="text-sm font-medium text-accent transition-colors">About</Link>
-          </nav>
-          <Link href="/" className="flex items-center gap-2 text-sm font-bold text-primary hover:text-accent transition-colors">
-            <ArrowLeft className="w-4 h-4" />
-            Back to Tool
-          </Link>
-        </div>
-      </header>
+      {/* Collapsing Smart Header */}
+      <SiteHeader type="about" />
 
       <main className="max-w-4xl mx-auto px-4 py-16 md:py-24">
         {/* Hero Section */}
@@ -120,7 +102,7 @@ export default function AboutPage() {
       {/* Footer */}
       <footer className="border-t bg-white mt-20">
         <div className="max-w-7xl mx-auto px-4 py-16">
-          <div className="flex flex-col md:flex-row justify-between items-start gap-12">
+          <div className="flex flex-col md:flex-row justify-between items-start gap-12 text-left">
             <div className="space-y-4">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white">
@@ -140,14 +122,14 @@ export default function AboutPage() {
                 <nav className="flex flex-col gap-2">
                   <Link href="/#features" className="text-sm text-muted-foreground hover:text-accent">Features</Link>
                   <Link href="/about" className="text-sm text-muted-foreground hover:text-accent">About</Link>
-                  <Link href="/sitemap.xml" className="text-sm text-muted-foreground hover:text-accent">Sitemap</Link>
+                  <a href="/sitemap.xml" className="text-sm text-muted-foreground hover:text-accent">Sitemap</a>
                 </nav>
               </div>
               <div className="space-y-4">
                 <h4 className="font-bold text-primary">Legal</h4>
                 <nav className="flex flex-col gap-2">
-                  <Link href="#" className="text-sm text-muted-foreground hover:text-accent">Privacy</Link>
-                  <Link href="#" className="text-sm text-muted-foreground hover:text-accent">Terms</Link>
+                  <a href="#" className="text-sm text-muted-foreground hover:text-accent">Privacy</a>
+                  <a href="#" className="text-sm text-muted-foreground hover:text-accent">Terms</a>
                 </nav>
               </div>
             </div>

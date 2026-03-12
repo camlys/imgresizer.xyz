@@ -1,7 +1,7 @@
 import React from 'react';
 import { ResizerTool } from '@/components/ImageResizer/ResizerTool';
-import { Layers, Zap, ShieldCheck, PencilRuler } from 'lucide-react';
-import Link from 'next/link';
+import { Zap, ShieldCheck, Layers } from 'lucide-react';
+import { SiteHeader } from '@/components/SiteHeader';
 
 export default function Home() {
   const jsonLd = {
@@ -34,41 +34,8 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg">
-              <Layers className="w-5 h-5" />
-            </div>
-            <span className="text-xl font-black tracking-tighter text-primary">
-              Img<span className="text-accent">Resizer</span>
-            </span>
-          </div>
-          <nav className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Features</a>
-            <Link href="/about" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">About</Link>
-            <a href="/sitemap.xml" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Sitemap</a>
-          </nav>
-          <div className="flex items-center gap-4">
-            <a 
-              href="https://camly.org" 
-              target="_blank" 
-              rel="noreferrer" 
-              className="group relative inline-flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-bold transition-all duration-300 bg-white border border-primary/10 rounded-full hover:border-accent/50 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.07)] hover:shadow-accent/20 active:scale-95"
-              title="Advanced PDF & Image Editor"
-            >
-              <PencilRuler className="w-3.5 h-3.5 md:w-4 md:h-4 text-accent transition-transform group-hover:rotate-12" />
-              <span className="text-primary group-hover:text-accent transition-colors hidden sm:inline">Camly Editor</span>
-              <span className="sm:hidden text-primary group-hover:text-accent transition-colors">Camly</span>
-              <span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
-              </span>
-            </a>
-          </div>
-        </div>
-      </header>
+      {/* Collapsing Smart Header */}
+      <SiteHeader type="home" />
 
       <main className="max-w-7xl mx-auto px-4 py-12 md:py-20">
         {/* Hero Section */}
@@ -151,10 +118,10 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="border-t bg-white mt-20">
-        <div className="max-w-7xl mx-auto px-4 py-8 md:py-16">
-          <div className="grid grid-cols-3 gap-4 md:gap-12 items-start text-left">
+        <div className="max-w-7xl mx-auto px-4 py-8 md:py-16 text-left">
+          <div className="grid grid-cols-3 gap-8 md:gap-12 items-start">
             {/* Branding */}
-            <div className="flex flex-col items-start gap-2 md:gap-4">
+            <div className="space-y-2 md:space-y-4">
               <div className="flex items-center gap-1.5 md:gap-2.5">
                 <div className="w-6 h-6 md:w-10 md:h-10 bg-primary rounded-lg md:rounded-xl flex items-center justify-center text-white shadow-md md:shadow-lg">
                   <Layers className="w-3.5 h-3.5 md:w-5 md:h-5" />
@@ -163,54 +130,40 @@ export default function Home() {
                   Img<span className="text-accent">Resizer</span>
                 </span>
               </div>
-              <p className="text-[10px] md:text-sm text-muted-foreground max-w-xs leading-tight md:leading-relaxed">
+              <p className="text-[10px] md:text-sm text-muted-foreground max-w-xs leading-tight">
                 Professional browser-based image resizing. Private and secure.
               </p>
             </div>
 
-            {/* Links */}
-            <div className="flex flex-col items-start gap-2 md:gap-4">
+            {/* Product Links */}
+            <div className="space-y-2 md:space-y-4">
               <h4 className="font-bold text-primary text-[10px] md:text-base">Product</h4>
               <nav className="flex flex-col gap-1 md:gap-2">
-                <a href="#features" className="text-[9px] md:text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Features</a>
-                <Link href="/about" className="text-[9px] md:text-sm font-medium text-muted-foreground hover:text-accent transition-colors">About</Link>
-                <a href="/sitemap.xml" className="text-[9px] md:text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Sitemap</a>
+                <a href="#features" className="text-[9px] md:text-sm text-muted-foreground hover:text-accent transition-colors">Features</a>
+                <a href="/about" className="text-[9px] md:text-sm text-muted-foreground hover:text-accent transition-colors">About</a>
+                <a href="/sitemap.xml" className="text-[9px] md:text-sm text-muted-foreground hover:text-accent transition-colors">Sitemap</a>
               </nav>
             </div>
 
-            {/* Legal & CTA */}
-            <div className="flex flex-row items-start gap-3 md:gap-8">
-              <div className="space-y-1 md:space-y-4">
-                <h4 className="font-bold text-primary text-[10px] md:text-base">Legal</h4>
-                <nav className="flex flex-col gap-1 md:gap-2">
-                  <a href="#" className="text-[9px] md:text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Privacy</a>
-                  <a href="#" className="text-[9px] md:text-sm font-medium text-muted-foreground hover:text-accent transition-colors">Terms</a>
-                </nav>
-              </div>
-              <div className="pt-3 md:pt-6">
-                <a 
-                  href="https://camly.org" 
-                  target="_blank" 
-                  rel="noreferrer" 
-                  className="group inline-flex items-center gap-1 md:gap-2.5 px-2 md:px-5 py-1.5 md:py-2.5 text-[8px] md:text-xs font-bold transition-all duration-300 bg-white border border-primary/10 rounded-full hover:border-accent/50 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] hover:shadow-accent/10 active:scale-95"
-                >
-                  <PencilRuler className="w-3 h-3 md:w-4 md:h-4 text-accent transition-transform group-hover:rotate-12" />
-                  <span className="text-primary group-hover:text-accent transition-colors hidden sm:inline">Advanced Editor</span>
-                  <span className="sm:hidden text-primary group-hover:text-accent transition-colors">Camly</span>
-                </a>
-              </div>
+            {/* Legal Links */}
+            <div className="space-y-2 md:space-y-4">
+              <h4 className="font-bold text-primary text-[10px] md:text-base">Legal</h4>
+              <nav className="flex flex-col gap-1 md:gap-2">
+                <a href="#" className="text-[9px] md:text-sm text-muted-foreground hover:text-accent transition-colors">Privacy</a>
+                <a href="#" className="text-[9px] md:text-sm text-muted-foreground hover:text-accent transition-colors">Terms</a>
+              </nav>
             </div>
           </div>
 
           <div className="mt-8 md:mt-16 pt-4 md:pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
-            <p className="text-[9px] md:text-xs font-medium text-muted-foreground">
+            <p className="text-[10px] md:text-xs font-medium text-muted-foreground">
               © 2025 ImgResizer.xyz
             </p>
-            <div className="flex items-center gap-2 md:gap-4 text-[8px] md:text-[10px] uppercase tracking-tighter md:tracking-widest font-bold text-muted-foreground/40">
+            <div className="flex items-center gap-2 md:gap-4 text-[8px] md:text-[10px] uppercase tracking-widest font-bold text-muted-foreground/30">
               <span>Private</span>
-              <span className="w-0.5 h-0.5 rounded-full bg-border" />
+              <span className="w-1 h-1 rounded-full bg-border" />
               <span>Browser</span>
-              <span className="w-0.5 h-0.5 rounded-full bg-border" />
+              <span className="w-1 h-1 rounded-full bg-border" />
               <span>AI</span>
             </div>
           </div>
