@@ -1,8 +1,7 @@
-
 "use client";
 
 import React from 'react';
-import { Lock, Unlock, Percent, Move, RotateCw } from 'lucide-react';
+import { Lock, Unlock, Percent, Move, RotateCw, FlipHorizontal, FlipVertical } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
@@ -23,6 +22,8 @@ export interface ResizeParams {
   lockAspectRatio: boolean;
   percentage: number;
   rotation: number;
+  flipX: boolean;
+  flipY: boolean;
 }
 
 interface ResizeControlsProps {
@@ -76,7 +77,6 @@ export const ResizeControls: React.FC<ResizeControlsProps> = ({
   originalHeight, 
   onChange 
 }) => {
-  // If rotated 90 or 270, the effective source aspect ratio flips
   const isVertical = params.rotation === 90 || params.rotation === 270;
   const currentSourceW = isVertical ? originalHeight : originalWidth;
   const currentSourceH = isVertical ? originalWidth : originalHeight;
@@ -140,10 +140,9 @@ export const ResizeControls: React.FC<ResizeControlsProps> = ({
 
   const cycleRotation = () => {
     const nextRotation = (params.rotation + 90) % 360;
-    // Swap width/height if it's a 90 deg rotation transition
     const isNowVertical = nextRotation === 90 || nextRotation === 270;
-    const newWidth = isNowVertical ? currentSourceH : currentSourceW;
-    const newHeight = isNowVertical ? currentSourceW : currentSourceH;
+    const newWidth = isNowVertical ? originalHeight : originalWidth;
+    const newHeight = isNowVertical ? originalWidth : originalHeight;
     
     onChange({ 
       ...params, 
@@ -194,28 +193,55 @@ export const ResizeControls: React.FC<ResizeControlsProps> = ({
         </div>
       </div>
 
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex-1 space-y-1.5">
-          <Label className="text-[8px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground flex items-center gap-1">
-            <Percent className="w-2.5 h-2.5 md:w-3 h-3" /> Scale
-          </Label>
-          <div className="flex items-center gap-2 md:gap-4">
-            <Input 
-              type="range" 
-              min="1" 
-              max="200" 
-              value={params.percentage} 
-              onChange={(e) => handlePercentageChange(e.target.value)}
-              className="h-4 md:h-6 accent-accent"
-            />
-            <span className="text-[9px] md:text-sm font-semibold text-primary w-6 md:w-12 text-right">{params.percentage}%</span>
-          </div>
+      <div className="space-y-3">
+        <Label className="text-[8px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground flex items-center gap-1">
+          <RotateCw className="w-2.5 h-2.5 md:w-3 h-3" /> Transform
+        </Label>
+        <div className="flex items-center gap-2">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={cycleRotation} 
+            className="flex-1 h-8 md:h-10 text-[9px] md:text-xs gap-1.5"
+            title="Rotate 90°"
+          >
+            <RotateCw className="w-3 h-3 md:w-4 h-4" /> 90°
+          </Button>
+          <Button 
+            variant={params.flipX ? "secondary" : "outline"}
+            size="sm" 
+            onClick={() => onChange({ ...params, flipX: !params.flipX })} 
+            className="flex-1 h-8 md:h-10 text-[9px] md:text-xs gap-1.5"
+            title="Flip Horizontal"
+          >
+            <FlipHorizontal className="w-3 h-3 md:w-4 h-4" /> Flip H
+          </Button>
+          <Button 
+            variant={params.flipY ? "secondary" : "outline"}
+            size="sm" 
+            onClick={() => onChange({ ...params, flipY: !params.flipY })} 
+            className="flex-1 h-8 md:h-10 text-[9px] md:text-xs gap-1.5"
+            title="Flip Vertical"
+          >
+            <FlipVertical className="w-3 h-3 md:w-4 h-4" /> Flip V
+          </Button>
         </div>
-        <div className="shrink-0 space-y-1.5">
-           <Label className="text-[8px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground block text-center">Rotate</Label>
-           <Button variant="outline" size="icon" onClick={cycleRotation} className="h-7 w-7 md:h-11 md:w-11">
-             <RotateCw className="w-3.5 h-3.5 md:w-5 md:h-5" />
-           </Button>
+      </div>
+
+      <div className="space-y-1.5">
+        <Label className="text-[8px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground flex items-center gap-1">
+          <Percent className="w-2.5 h-2.5 md:w-3 h-3" /> Scale
+        </Label>
+        <div className="flex items-center gap-2 md:gap-4">
+          <Input 
+            type="range" 
+            min="1" 
+            max="200" 
+            value={params.percentage} 
+            onChange={(e) => handlePercentageChange(e.target.value)}
+            className="h-4 md:h-6 accent-accent"
+          />
+          <span className="text-[9px] md:text-sm font-semibold text-primary w-6 md:w-12 text-right">{params.percentage}%</span>
         </div>
       </div>
 

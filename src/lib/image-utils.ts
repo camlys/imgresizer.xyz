@@ -1,10 +1,11 @@
-
 export interface ResizeOptions {
   width: number;
   height: number;
   format: 'image/jpeg' | 'image/png' | 'image/webp';
   quality: number;
   rotation: number;
+  flipX?: boolean;
+  flipY?: boolean;
   crop?: { x: number; y: number; width: number; height: number } | null;
 }
 
@@ -17,43 +18,47 @@ export const resizeImage = (
     reader.onload = (event) => {
       const img = new Image();
       img.onload = () => {
-        // Handle crop boundaries
+        // Handle crop boundaries using natural dimensions
         const sourceX = options.crop ? options.crop.x : 0;
         const sourceY = options.crop ? options.crop.y : 0;
-        const sourceW = options.crop ? options.crop.width : img.width;
-        const sourceH = options.crop ? options.crop.height : img.height;
+        const sourceW = options.crop ? options.crop.width : img.naturalWidth;
+        const sourceH = options.crop ? options.crop.height : img.naturalHeight;
 
-        // Intermediate canvas for cropping and rotation
+        // Intermediate canvas for transformations
         const stageCanvas = document.createElement('canvas');
         const stageCtx = stageCanvas.getContext('2d');
         if (!stageCtx) return reject(new Error('Could not get canvas context'));
 
-        // Determine stage dimensions based on rotation
+        // Determine dimensions based on rotation
         const isVertical = options.rotation === 90 || options.rotation === 270;
         stageCanvas.width = isVertical ? sourceH : sourceW;
         stageCanvas.height = isVertical ? sourceW : sourceH;
 
-        // Apply rotation to stage
+        // Apply transformations (Rotation and Mirroring)
+        stageCtx.save();
         stageCtx.translate(stageCanvas.width / 2, stageCanvas.height / 2);
         stageCtx.rotate((options.rotation * Math.PI) / 180);
         
-        // Draw the cropped/full source to stage
+        // Apply mirroring
+        const scaleX = options.flipX ? -1 : 1;
+        const scaleY = options.flipY ? -1 : 1;
+        stageCtx.scale(scaleX, scaleY);
+        
+        // Draw the cropped source to stage
         stageCtx.drawImage(
           img,
           sourceX, sourceY, sourceW, sourceH,
           -sourceW / 2, -sourceH / 2, sourceW, sourceH
         );
+        stageCtx.restore();
 
-        // Final canvas for resizing
-        // Ensure no stretching: the final canvas MUST match requested dimensions
+        // Final canvas for resizing to target dimensions
         const canvas = document.createElement('canvas');
         canvas.width = options.width;
         canvas.height = options.height;
         const ctx = canvas.getContext('2d');
         if (!ctx) return reject(new Error('Could not get canvas context'));
 
-        // Draw the processed stage to the final size
-        // We use the full width/height of the requested output
         ctx.drawImage(stageCanvas, 0, 0, options.width, options.height);
 
         canvas.toBlob(
