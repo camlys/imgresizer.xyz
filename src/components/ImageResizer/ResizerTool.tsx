@@ -285,33 +285,6 @@ export const ResizerTool = () => {
                     )}
                     {isProcessing && <div className="absolute inset-0 bg-white/20 backdrop-blur-[1px] z-10" />}
                   </div>
-                  
-                  <div className="mt-3 md:mt-6 flex flex-col items-center justify-between gap-3 md:gap-4 bg-primary/5 p-3 md:p-6 rounded-2xl border border-primary/10">
-                    <div className="space-y-0.5 md:space-y-1 text-center w-full">
-                      <p className="text-[8px] md:text-xs font-bold text-muted-foreground uppercase tracking-widest">Estimated File Size</p>
-                      <div className="flex items-baseline justify-center gap-1.5 md:gap-2">
-                        <span className="text-sm md:text-3xl font-black text-primary">
-                          {resizedData ? formatBytes(resizedData.size) : 'Calculating...'}
-                        </span>
-                        {resizedData && file && (
-                          <span className={cn(
-                            "text-[10px] md:text-sm font-bold",
-                            resizedData.size < file.size ? 'text-emerald-600' : 'text-amber-600'
-                          )}>
-                            ({((resizedData.size / file.size) * 100).toFixed(1)}%)
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    <Button 
-                      size="lg" 
-                      onClick={downloadImage} 
-                      disabled={!resizedData || isProcessing}
-                      className="w-full bg-accent hover:bg-accent/90 text-white shadow-xl shadow-accent/20 h-10 md:h-14 rounded-xl font-bold text-sm md:text-lg"
-                    >
-                      <Download className="w-4 h-4 md:w-5 h-5 mr-2 md:mr-3" /> Download
-                    </Button>
-                  </div>
                 </TabsContent>
 
                 <TabsContent value="crop" className="mt-0">
@@ -371,32 +344,63 @@ export const ResizerTool = () => {
                 </TabsContent>
               </Tabs>
 
-              <div className="bg-card border p-4 md:p-6 rounded-2xl shadow-sm">
-                 <h4 className="font-bold text-primary mb-3 md:mb-4 text-[10px] md:text-base uppercase tracking-wider">Final Output Parameters</h4>
-                 <div className="grid grid-cols-2 gap-4 md:gap-6">
-                   <div className="space-y-2 md:space-y-3 text-[10px] md:text-xs">
-                     <div className="flex justify-between">
-                       <span className="text-muted-foreground">Format</span>
-                       <span className="font-bold text-primary">{outputSettings.format.split('/')[1].toUpperCase()}</span>
-                     </div>
-                     <div className="flex justify-between">
-                       <span className="text-muted-foreground">Dimensions</span>
-                       <span className="font-bold text-primary">{params.width} × {params.height} px</span>
-                     </div>
-                   </div>
-                   <div className="space-y-2 md:space-y-3 text-[10px] md:text-xs">
-                     <div className="flex justify-between">
-                       <span className="text-muted-foreground">Rotation</span>
-                       <span className="font-bold text-primary">{params.rotation}°</span>
-                     </div>
-                     <div className="flex justify-between">
-                        <span className="text-muted-foreground">Mirror</span>
-                        <span className="font-bold text-primary">
-                          {params.flipX ? 'H' : ''}{params.flipX && params.flipY ? ' / ' : ''}{params.flipY ? 'V' : ''}{!params.flipX && !params.flipY ? 'None' : ''}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6 items-stretch">
+                {/* Estimated File Size Container */}
+                <div className="flex flex-col items-center justify-between gap-3 md:gap-4 bg-primary/5 p-3 md:p-6 rounded-2xl border border-primary/10">
+                  <div className="space-y-0.5 md:space-y-1 text-center w-full">
+                    <p className="text-[8px] md:text-xs font-bold text-muted-foreground uppercase tracking-widest">Estimated File Size</p>
+                    <div className="flex items-baseline justify-center gap-1.5 md:gap-2">
+                      <span className="text-sm md:text-3xl font-black text-primary">
+                        {resizedData ? formatBytes(resizedData.size) : 'Calculating...'}
+                      </span>
+                      {resizedData && file && (
+                        <span className={cn(
+                          "text-[10px] md:text-sm font-bold",
+                          resizedData.size < file.size ? 'text-emerald-600' : 'text-amber-600'
+                        )}>
+                          ({((resizedData.size / file.size) * 100).toFixed(1)}%)
                         </span>
-                     </div>
-                   </div>
-                 </div>
+                      )}
+                    </div>
+                  </div>
+                  <Button 
+                    size="lg" 
+                    onClick={downloadImage} 
+                    disabled={!resizedData || isProcessing}
+                    className="w-full bg-accent hover:bg-accent/90 text-white shadow-xl shadow-accent/20 h-10 md:h-14 rounded-xl font-bold text-sm md:text-lg"
+                  >
+                    <Download className="w-4 h-4 md:w-5 h-5 mr-2 md:mr-3" /> Download
+                  </Button>
+                </div>
+
+                {/* Final Output Parameters Container */}
+                <div className="bg-card border p-4 md:p-6 rounded-2xl shadow-sm flex flex-col justify-center">
+                  <h4 className="font-bold text-primary mb-3 md:mb-4 text-[10px] md:text-base uppercase tracking-wider">Final Output Parameters</h4>
+                  <div className="grid grid-cols-2 gap-4 md:gap-6">
+                    <div className="space-y-2 md:space-y-3 text-[10px] md:text-xs">
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Format</span>
+                        <span className="font-bold text-primary">{outputSettings.format.split('/')[1].toUpperCase()}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Dimensions</span>
+                        <span className="font-bold text-primary">{params.width} × {params.height} px</span>
+                      </div>
+                    </div>
+                    <div className="space-y-2 md:space-y-3 text-[10px] md:text-xs">
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Rotation</span>
+                        <span className="font-bold text-primary">{params.rotation}°</span>
+                      </div>
+                      <div className="flex justify-between">
+                          <span className="text-muted-foreground">Mirror</span>
+                          <span className="font-bold text-primary">
+                            {params.flipX ? 'H' : ''}{params.flipX && params.flipY ? ' / ' : ''}{params.flipY ? 'V' : ''}{!params.flipX && !params.flipY ? 'None' : ''}
+                          </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           )}
