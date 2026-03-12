@@ -204,7 +204,8 @@ export const ResizerTool = () => {
   return (
     <div className="max-w-7xl mx-auto">
       <div className="grid grid-cols-2 md:grid-cols-12 gap-3 md:gap-8">
-        <div className="col-span-1 md:col-span-5 space-y-3 md:space-y-6 order-1 md:order-2">
+        {/* Left Column: Controls (was Right) */}
+        <div className="col-span-1 md:col-span-5 space-y-3 md:space-y-6 order-1">
           <UploadZone 
             onImageSelect={handleFileSelect} 
             selectedFile={file} 
@@ -243,7 +244,8 @@ export const ResizerTool = () => {
           )}
         </div>
 
-        <div className="col-span-1 md:col-span-7 order-2 md:order-1">
+        {/* Right Column: Preview Workspace (was Left) */}
+        <div className="col-span-1 md:col-span-7 order-2">
           {!file ? (
             <div className="h-full min-h-[300px] md:min-h-[400px] border-2 border-dashed border-border rounded-2xl flex flex-col items-center justify-center text-muted-foreground gap-2 md:gap-3 bg-muted/20 px-4 text-center">
               <div className="w-12 h-12 md:w-20 md:h-20 rounded-full bg-border/50 flex items-center justify-center">
