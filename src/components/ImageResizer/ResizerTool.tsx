@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
@@ -13,6 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 import ReactCrop, { type Crop, type PixelCrop, centerCrop, makeAspectCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 
 export const ResizerTool = () => {
   const { toast } = useToast();
@@ -202,8 +204,8 @@ export const ResizerTool = () => {
 
   return (
     <div className="max-w-7xl mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
-        <div className="md:col-span-5 space-y-4 md:space-y-6 order-2 md:order-1">
+      <div className="grid grid-cols-2 md:grid-cols-12 gap-3 md:gap-8">
+        <div className="col-span-1 md:col-span-5 space-y-3 md:space-y-6 order-2 md:order-1">
           <UploadZone 
             onImageSelect={handleFileSelect} 
             selectedFile={file} 
@@ -212,7 +214,7 @@ export const ResizerTool = () => {
           />
           
           {file && originalMeta && (
-            <>
+            <div className="space-y-3 md:space-y-6">
               <ResizeControls 
                 params={params} 
                 onChange={setParams} 
@@ -220,80 +222,83 @@ export const ResizerTool = () => {
                 originalHeight={originalMeta.h} 
               />
 
-              <div className="bg-card p-4 md:p-6 rounded-xl md:rounded-2xl border border-border shadow-sm space-y-4">
-                <h3 className="font-semibold text-primary flex items-center gap-2 text-sm md:text-base">
-                  <Settings2 className="w-4 h-4" /> Format
+              <div className="bg-card p-3 md:p-6 rounded-xl md:rounded-2xl border border-border shadow-sm space-y-2 md:space-y-4">
+                <h3 className="font-semibold text-primary flex items-center gap-2 text-xs md:text-base">
+                  <Settings2 className="w-3.5 h-3.5 md:w-4 h-4" /> Format
                 </h3>
                 <Tabs 
                   value={outputSettings.format} 
                   onValueChange={(val) => setOutputSettings(prev => ({ ...prev, format: val as any }))}
                   className="w-full"
                 >
-                  <TabsList className="w-full bg-muted grid grid-cols-3 h-10 p-1">
-                    <TabsTrigger value="image/jpeg" className="text-xs md:text-sm h-full font-bold">JPG</TabsTrigger>
-                    <TabsTrigger value="image/png" className="text-xs md:text-sm h-full font-bold">PNG</TabsTrigger>
-                    <TabsTrigger value="image/webp" className="text-xs md:text-sm h-full font-bold">WEBP</TabsTrigger>
+                  <TabsList className="w-full bg-muted grid grid-cols-3 h-8 md:h-10 p-0.5 md:p-1">
+                    <TabsTrigger value="image/jpeg" className="text-[10px] md:text-sm h-full font-bold px-1">JPG</TabsTrigger>
+                    <TabsTrigger value="image/png" className="text-[10px] md:text-sm h-full font-bold px-1">PNG</TabsTrigger>
+                    <TabsTrigger value="image/webp" className="text-[10px] md:text-sm h-full font-bold px-1">WEBP</TabsTrigger>
                   </TabsList>
                 </Tabs>
               </div>
 
               <SmartAiAdvice imageFile={file} onApply={handleAiApply} />
-            </>
+            </div>
           )}
         </div>
 
-        <div className="md:col-span-7 order-1 md:order-2">
+        <div className="col-span-1 md:col-span-7 order-1 md:order-2">
           {!file ? (
-            <div className="h-full min-h-[400px] border-2 border-dashed border-border rounded-2xl flex flex-col items-center justify-center text-muted-foreground gap-3 bg-muted/20 px-4 text-center">
-              <div className="w-20 h-20 rounded-full bg-border/50 flex items-center justify-center">
-                <ImageIcon className="w-10 h-10 opacity-30" />
+            <div className="h-full min-h-[300px] md:min-h-[400px] border-2 border-dashed border-border rounded-2xl flex flex-col items-center justify-center text-muted-foreground gap-2 md:gap-3 bg-muted/20 px-4 text-center">
+              <div className="w-12 h-12 md:w-20 md:h-20 rounded-full bg-border/50 flex items-center justify-center">
+                <ImageIcon className="w-6 h-6 md:w-10 md:h-10 opacity-30" />
               </div>
-              <p className="text-sm font-medium">Upload an image to start</p>
+              <p className="text-xs md:text-sm font-medium">Upload an image to start</p>
             </div>
           ) : (
-            <div className="space-y-4 md:space-y-6 md:sticky md:top-24">
+            <div className="space-y-3 md:space-y-6 md:sticky md:top-24">
                <Tabs defaultValue="preview" className="w-full">
-                <div className="flex items-center justify-between mb-4">
-                  <TabsList className="bg-muted h-10 p-1 grid grid-cols-3 w-72">
-                    <TabsTrigger value="preview" className="flex items-center justify-center gap-2 text-xs md:text-sm h-8">
-                      <Eye className="w-4 h-4" /> Result
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-2 mb-3 md:mb-4">
+                  <TabsList className="bg-muted h-8 md:h-10 p-0.5 md:p-1 grid grid-cols-3 w-full sm:w-72">
+                    <TabsTrigger value="preview" className="flex items-center justify-center gap-1.5 md:gap-2 text-[10px] md:text-sm h-full">
+                      <Eye className="w-3.5 h-3.5 md:w-4 h-4" /> Result
                     </TabsTrigger>
-                    <TabsTrigger value="crop" className="flex items-center justify-center gap-2 text-xs md:text-sm h-8">
-                      <CropIcon className="w-4 h-4" /> Crop
+                    <TabsTrigger value="crop" className="flex items-center justify-center gap-1.5 md:gap-2 text-[10px] md:text-sm h-full">
+                      <CropIcon className="w-3.5 h-3.5 md:w-4 h-4" /> Crop
                     </TabsTrigger>
-                    <TabsTrigger value="original" className="flex items-center justify-center gap-2 text-xs md:text-sm h-8">
-                      <ImageIcon className="w-4 h-4" /> Source
+                    <TabsTrigger value="original" className="flex items-center justify-center gap-1.5 md:gap-2 text-[10px] md:text-sm h-full">
+                      <ImageIcon className="w-3.5 h-3.5 md:w-4 h-4" /> Source
                     </TabsTrigger>
                   </TabsList>
                   
                   {isProcessing && (
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground animate-pulse">
+                    <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground animate-pulse">
                       <RefreshCcw className="w-3 h-3 animate-spin" /> Processing...
                     </div>
                   )}
                 </div>
 
                 <TabsContent value="preview" className="mt-0">
-                  <div className="relative rounded-2xl border-2 border-border bg-neutral-900 overflow-hidden shadow-xl min-h-[300px] md:min-h-[500px] flex items-center justify-center p-6 md:p-10">
+                  <div className="relative rounded-2xl border-2 border-border bg-neutral-900 overflow-hidden shadow-xl min-h-[250px] md:min-h-[500px] flex items-center justify-center p-4 md:p-12">
                     {resizedData && (
                       <img 
                         src={resizedData.url} 
                         alt="Resized Preview" 
-                        className="max-h-full max-w-full object-contain shadow-2xl"
+                        className="max-h-full max-w-full object-contain shadow-2xl transition-all duration-300"
                       />
                     )}
-                    {isProcessing && <div className="absolute inset-0 bg-white/20 backdrop-blur-[1px]" />}
+                    {isProcessing && <div className="absolute inset-0 bg-white/20 backdrop-blur-[1px] z-10" />}
                   </div>
                   
-                  <div className="mt-6 flex flex-col items-center justify-between gap-4 bg-primary/5 p-4 md:p-6 rounded-2xl border border-primary/10">
-                    <div className="space-y-1 text-center w-full">
-                      <p className="text-[10px] md:text-xs font-bold text-muted-foreground uppercase tracking-widest">Estimated File Size</p>
-                      <div className="flex items-baseline justify-center gap-2">
-                        <span className="text-xl md:text-3xl font-black text-primary">
+                  <div className="mt-3 md:mt-6 flex flex-col items-center justify-between gap-3 md:gap-4 bg-primary/5 p-3 md:p-6 rounded-2xl border border-primary/10">
+                    <div className="space-y-0.5 md:space-y-1 text-center w-full">
+                      <p className="text-[8px] md:text-xs font-bold text-muted-foreground uppercase tracking-widest">Estimated File Size</p>
+                      <div className="flex items-baseline justify-center gap-1.5 md:gap-2">
+                        <span className="text-sm md:text-3xl font-black text-primary">
                           {resizedData ? formatBytes(resizedData.size) : 'Calculating...'}
                         </span>
                         {resizedData && file && (
-                          <span className={`text-xs md:text-sm font-bold ${resizedData.size < file.size ? 'text-emerald-600' : 'text-amber-600'}`}>
+                          <span className={cn(
+                            "text-[10px] md:text-sm font-bold",
+                            resizedData.size < file.size ? 'text-emerald-600' : 'text-amber-600'
+                          )}>
                             ({((resizedData.size / file.size) * 100).toFixed(1)}%)
                           </span>
                         )}
@@ -303,22 +308,22 @@ export const ResizerTool = () => {
                       size="lg" 
                       onClick={downloadImage} 
                       disabled={!resizedData || isProcessing}
-                      className="w-full bg-accent hover:bg-accent/90 text-white shadow-xl shadow-accent/20 h-14 rounded-xl font-bold text-lg"
+                      className="w-full bg-accent hover:bg-accent/90 text-white shadow-xl shadow-accent/20 h-10 md:h-14 rounded-xl font-bold text-sm md:text-lg"
                     >
-                      <Download className="w-5 h-5 mr-3" /> Download Processed Image
+                      <Download className="w-4 h-4 md:w-5 h-5 mr-2 md:mr-3" /> Download
                     </Button>
                   </div>
                 </TabsContent>
 
                 <TabsContent value="crop" className="mt-0">
-                  <div className="relative rounded-2xl border-2 border-border bg-neutral-900 overflow-hidden shadow-xl min-h-[300px] md:min-h-[500px] flex items-center justify-center p-6 md:p-10">
-                    <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
-                      <Badge variant="secondary" className="bg-black/60 text-white border-none backdrop-blur-md px-3 py-1 font-mono text-[10px]">
-                        Original: {originalMeta.w} × {originalMeta.h} px
+                  <div className="relative rounded-2xl border-2 border-border bg-neutral-900 overflow-hidden shadow-xl min-h-[250px] md:min-h-[500px] flex items-center justify-center p-4 md:p-12">
+                    <div className="absolute top-2 left-2 md:top-4 md:left-4 z-20 flex flex-col gap-1.5 md:gap-2">
+                      <Badge variant="secondary" className="bg-black/60 text-white border-none backdrop-blur-md px-2 py-0.5 md:px-3 md:py-1 font-mono text-[8px] md:text-[10px]">
+                        ORIGINAL: {originalMeta.w} × {originalMeta.h} px
                       </Badge>
                       {completedCrop && (
-                        <Badge variant="secondary" className="bg-accent/80 text-white border-none backdrop-blur-md px-3 py-1 font-mono text-[10px]">
-                          Selection: {Math.round(effectiveBaseSize.w)} × {Math.round(effectiveBaseSize.h)} px
+                        <Badge variant="secondary" className="bg-accent/80 text-white border-none backdrop-blur-md px-2 py-0.5 md:px-3 md:py-1 font-mono text-[8px] md:text-[10px]">
+                          CROP: {Math.round(effectiveBaseSize.w)} × {Math.round(effectiveBaseSize.h)} px
                         </Badge>
                       )}
                     </div>
@@ -334,24 +339,24 @@ export const ResizerTool = () => {
                           src={imageUrl}
                           alt="Crop target"
                           onLoad={onImageLoad}
-                          style={{ display: 'block', maxWidth: '100%', maxHeight: '480px' }}
+                          style={{ display: 'block', maxWidth: '100%', maxHeight: '450px' }}
                           className="object-contain"
                         />
                       </ReactCrop>
                     )}
                   </div>
-                  <div className="mt-4 p-4 border rounded-xl bg-accent/5 flex items-center gap-3">
-                     <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent shrink-0">
-                        <CropIcon className="w-5 h-5" />
+                  <div className="mt-3 p-2.5 md:p-4 border rounded-xl bg-accent/5 flex items-center gap-2.5 md:gap-3">
+                     <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent shrink-0">
+                        <CropIcon className="w-4 h-4 md:w-5 h-5" />
                      </div>
-                     <p className="text-xs md:text-sm font-medium text-primary/80">
-                        Adjust handles to crop. Selection coordinates map directly to your original high-res source.
+                     <p className="text-[10px] md:text-sm font-medium text-primary/80 leading-snug">
+                        Adjust handles to crop. All transforms are mapped directly to your original high-res source pixels.
                      </p>
                   </div>
                 </TabsContent>
 
                 <TabsContent value="original" className="mt-0">
-                  <div className="relative rounded-2xl border-2 border-border bg-neutral-900 overflow-hidden shadow-xl min-h-[300px] md:min-h-[500px] flex items-center justify-center p-6 md:p-10">
+                  <div className="relative rounded-2xl border-2 border-border bg-neutral-900 overflow-hidden shadow-xl min-h-[250px] md:min-h-[500px] flex items-center justify-center p-4 md:p-12">
                     {imageUrl && (
                       <img 
                         src={imageUrl} 
@@ -360,32 +365,32 @@ export const ResizerTool = () => {
                       />
                     )}
                   </div>
-                  <div className="mt-4 p-4 border rounded-xl flex justify-between items-center text-xs md:text-sm font-bold bg-white shadow-sm">
-                     <span className="text-muted-foreground uppercase tracking-widest text-[10px]">Source Resolution</span>
+                  <div className="mt-3 p-2.5 md:p-4 border rounded-xl flex justify-between items-center text-[10px] md:text-sm font-bold bg-white shadow-sm">
+                     <span className="text-muted-foreground uppercase tracking-widest text-[8px] md:text-[10px]">Source Resolution</span>
                      <span className="text-primary">{originalMeta.w} × {originalMeta.h} px</span>
                   </div>
                 </TabsContent>
               </Tabs>
 
-              <div className="bg-card border p-6 rounded-2xl hidden md:block shadow-sm">
-                 <h4 className="font-bold text-primary mb-4 text-sm md:text-base uppercase tracking-wider">Final Output Parameters</h4>
-                 <div className="grid grid-cols-2 gap-6">
-                   <div className="space-y-3">
-                     <div className="flex justify-between text-xs">
+              <div className="bg-card border p-4 md:p-6 rounded-2xl shadow-sm">
+                 <h4 className="font-bold text-primary mb-3 md:mb-4 text-[10px] md:text-base uppercase tracking-wider">Final Output Parameters</h4>
+                 <div className="grid grid-cols-2 gap-4 md:gap-6">
+                   <div className="space-y-2 md:space-y-3 text-[10px] md:text-xs">
+                     <div className="flex justify-between">
                        <span className="text-muted-foreground">Format</span>
                        <span className="font-bold text-primary">{outputSettings.format.split('/')[1].toUpperCase()}</span>
                      </div>
-                     <div className="flex justify-between text-xs">
+                     <div className="flex justify-between">
                        <span className="text-muted-foreground">Dimensions</span>
                        <span className="font-bold text-primary">{params.width} × {params.height} px</span>
                      </div>
                    </div>
-                   <div className="space-y-3">
-                     <div className="flex justify-between text-xs">
+                   <div className="space-y-2 md:space-y-3 text-[10px] md:text-xs">
+                     <div className="flex justify-between">
                        <span className="text-muted-foreground">Rotation</span>
                        <span className="font-bold text-primary">{params.rotation}°</span>
                      </div>
-                     <div className="flex justify-between text-xs">
+                     <div className="flex justify-between">
                         <span className="text-muted-foreground">Mirror</span>
                         <span className="font-bold text-primary">
                           {params.flipX ? 'H' : ''}{params.flipX && params.flipY ? ' / ' : ''}{params.flipY ? 'V' : ''}{!params.flipX && !params.flipY ? 'None' : ''}
